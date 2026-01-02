@@ -14,7 +14,8 @@ A full-featured restaurant website and mobile-integrated system using Firebase, 
 - Promotion Management & Display
 - Delivery Rider Status Update
 - Separate Delivery Website
-
+- Cart Function
+  
 🛠️ Technologies & Tools
 
 - *Frontend:* HTML, CSS, JavaScript
