@@ -1,0 +1,443 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Shark Port City</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="https://kit.fontawesome.com/1165876da6.js" crossorigin="anonymous"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+            rel="stylesheet"
+        />
+    </head>
+    <body>
+        <style>
+            /* --- CSS Variables --- */
+            :root {
+                --primary-dark: #2c3e50;
+                --secondary-light: #f4f7f6;
+                --text-color: #333;
+                --white: #ffffff;
+                --accent-green: #2ecc71;
+                --accent-blue: #3498db;
+                --accent-purple: #9b59b6;
+                --accent-orange: #f39c12;
+                --online-status: #34c759;
+            }
+
+            /* --- General & Main Container Styles --- */
+            body {
+                background-color: var(--secondary-light);
+                color: var(--text-color);
+                margin: 0;
+                font-family: 'Poppins', sans-serif;
+                display: flex;
+                min-height: 100vh;
+            }
+
+            .main-content {
+                flex-grow: 1;
+                padding: 50px;
+                display: flex;
+                flex-direction: column;
+                gap: 40px;
+            }
+
+            .header-bar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+
+            .back-button {
+                background-color: var(--primary-dark);
+                color: var(--white);
+                border: none;
+                padding: 10px 20px;
+                border-radius: 8px;
+                text-decoration: none;
+                transition: background-color 0.3s ease;
+            }
+
+            .back-button:hover {
+                background-color: #34495e;
+            }
+
+            .inquiry-section {
+                margin-bottom: 40px;
+            }
+
+            .inquiry-section h2 {
+                font-weight: 600;
+                margin-bottom: 20px;
+                border-left: 5px solid var(--accent-orange);
+                padding-left: 15px;
+            }
+
+            .inquiry-grid {
+                display: grid;
+                gap: 30px;
+            }
+
+            .inquiry-card {
+                background-color: var(--white);
+                border-radius: 12px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                padding: 25px;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+                border: 1px solid #e0e0e0;
+                position: relative;
+            }
+
+            .inquiry-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            }
+            
+            .inquiry-type {
+                font-weight: 600;
+                color: var(--accent-orange);
+                margin-bottom: 5px;
+            }
+            
+            .inquiry-card h3 {
+                font-size: 1.25rem;
+                margin-bottom: 10px;
+            }
+            
+            .inquiry-card p {
+                color: #666;
+                margin-bottom: 15px;
+                line-height: 1.6;
+            }
+
+ 
+
+            .respond-button {
+                background-color:#000000;
+                color: var(--white);
+                border: none;
+                padding: 10px 20px;
+                border-radius: 8px;
+                text-decoration: none;
+                transition: background-color 0.3s ease;
+                cursor: pointer;
+            }
+
+            .respond-button:hover {
+                background-color: #000000;
+            }
+
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 1000;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgba(0,0,0,0.4);
+                padding-top: 60px;
+            }
+
+            .modal-content {
+                background-color: #fefefe;
+                margin: 5% auto;
+                padding: 30px;
+                border: 1px solid #888;
+                width: 80%;
+                max-width: 600px;
+                border-radius: 12px;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            }
+
+            .close-button {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+
+            .close-button:hover,
+            .close-button:focus {
+                color: #000;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+            .modal-content h2 {
+                margin-top: 0;
+                color: var(--primary-dark);
+            }
+
+            .modal-content textarea {
+                width: 100%;
+                padding: 10px;
+                font-size: 1rem;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                resize: vertical;
+                min-height: 150px;
+                margin-bottom: 15px;
+            }
+            
+            .modal-content .submit-button {
+                background-color: #f70404;
+                color: var(--white);
+                border: none;
+                padding: 12px 25px;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+
+            .modal-content .submit-button:hover {
+                background-color: #f70404;
+            }
+
+            
+            nav {
+                background-color: #000000;
+                width: 350px;
+                padding: 30px 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+                position: sticky;
+                top: 0;
+                left: 0;
+                height: 100vh;
+            }
+            .logo { margin-bottom: 20px; }
+            .logo img { width: 150px; }
+            .profile-status { display: flex; align-items: center; gap: 8px; font-size: 14px; margin-bottom: 20px; color: var(--white); }
+            .online-indicator { width: 10px; height: 10px; background-color: var(--online-status); border-radius: 50%; animation: pulse-online 1.5s infinite; }
+            @keyframes pulse-online { 0% { box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(52, 199, 89, 0); } 100% { box-shadow: 0 0 0 0 rgba(52, 199, 89, 0); } }
+            nav ul { list-style: none; padding: 0; width: 100%; margin: 0; }
+            nav ul li { position: relative; }
+            nav ul li a { display: block; padding: 20px 30px; color: var(--white); text-decoration: none; font-size: 16px; transition: background-color 0.3s ease, padding-left 0.3s ease; cursor: pointer; }
+            nav ul li a:hover { background-color: rgba(255, 255, 255, 0.1); padding-left: 40px; text-decoration: underline solid #f70404; text-decoration-thickness: 3px; }
+            .dropdown-content { display: none; position: absolute; top: 100%; left: 0; background-color: #000000; width: 100%; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); z-index: 100; border-radius: 0 0 8px 8px; }
+            .dropdown:hover .dropdown-content { display: block; }
+            .dropdown-content li a:hover { background-color: #1a1a1a; padding-left: 45px; }
+            @media (max-width: 992px) { .main-content { padding: 20px; } }
+            .respond-button.responded {
+    background-color: #f70404; /* ✅ Green for responded */
+    color: white;
+    cursor: default;
+    opacity: 0.9;
+}
+.respond-button.responded:hover {
+    background-color: #f70404; /* No hover color change */
+}
+
+        </style>
+
+        <nav>
+            <div class="logo">
+                <img src="../images/Group 17.png" alt="Shark Port City Logo">
+            </div>
+            <div class="profile-status">
+                <span class="online-indicator"></span>
+                Online
+            </div>
+            <ul>
+                <li><a href="staf.html">Dashboard</a></li>
+                
+                <li class="dropdown">
+                    <a href="#">Content Management ▾</a>
+                    <ul class="dropdown-content">
+                    
+                        <li><a href="pgallery.html">Photo Galleries</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Dish Management ▾</a>
+                    <ul class="dropdown-content">
+                        <li><a href="Menum.php">Menus</a></li>
+                       
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Order & Reservation Management▾</a>
+                    <ul class="dropdown-content">
+                        <li><a href="orderm.html">Orders</a></li>
+                        <li><a href="reservationm.html">Reservations</a></li>
+                    </ul>
+                </li>
+                <li><a href="inquirie.html">Inquiries</a></li>
+                <li><a href="login.html">Log Out</a></li>
+            </ul>
+        </nav>
+
+        
+        <div class="main-content">
+            <div class="header-bar">
+                <h1>Inquiries</h1>
+                <a href="home.php" class="back-button">Back to Dashboard</a>
+            </div>
+
+            <div class="inquiry-section">
+                <h2>Ratings & Feedbacks</h2>
+               <div class="inquiry-grid" id="feedbackGrid">
+                    
+                       
+                    </div>
+
+                </div>
+            
+
+            <div class="inquiry-section">
+                <h2>Normal Inquiries</h2>
+                <div class="inquiry-grid" id="inquiryGrid">
+                 
+                </div>
+            </div>
+        </div>
+</div>
+        <div id="responseModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Respond to Inquiry</h2>
+                <form id="responseForm">
+                    <textarea placeholder="Type your response here..." required></textarea>
+                    <button type="submit" class="submit-button">Send Response</button>
+                </form>
+            </div>
+        </div>
+<script>
+const modal = document.getElementById("responseModal");
+const responseForm = document.getElementById("responseForm");
+
+async function loadData() {
+    try {
+        const res = await fetch("get_inquiries.php");
+        const data = await res.json();
+
+        const inquiryGrid = document.getElementById("inquiryGrid");
+        const feedbackGrid = document.getElementById("feedbackGrid");
+
+        inquiryGrid.innerHTML = "";
+        feedbackGrid.innerHTML = "";
+
+        // Feedbacks
+       if (data.feedbacks) {
+    for (let id in data.feedbacks) {
+        const f = data.feedbacks[id];
+        const responded = f.responded ? 'Responded' : 'Respond';
+        const respondedClass = f.responded ? 'responded' : '';
+        const disabledAttr = f.responded ? 'disabled' : '';
+        feedbackGrid.innerHTML += `
+            <div class="inquiry-card" data-id="${id}" data-type="feedback">
+                <div class="inquiry-type">Feedback</div>
+                <h3>Food Rating: ${f.foodRating ?? "-"} | Rider Rating: ${f.riderRating ?? "-"}</h3>
+                <p>${f.comment ?? ""}</p>
+                <button class="respond-button ${respondedClass}" ${disabledAttr}>${responded}</button>
+            </div>
+        `;
+    }
+}
+
+        if (data.inquiries) {
+    for (let id in data.inquiries) {
+        const q = data.inquiries[id];
+        const responded = q.responded ? 'Responded' : 'Respond';
+        const respondedClass = q.responded ? 'responded' : '';
+        const disabledAttr = q.responded ? 'disabled' : '';
+        inquiryGrid.innerHTML += `
+            <div class="inquiry-card" data-id="${id}" data-type="inquiry">
+                <div class="inquiry-type">${q.type ?? "Inquiry"}</div>
+                <h3>Subject: ${q.subject ?? "No Subject"}</h3>
+                <p>${q.message ?? ""}</p>
+                <button class="respond-button ${respondedClass}" ${disabledAttr}>${responded}</button>
+            </div>
+        `;
+    }
+}
+    } catch (err) {
+        console.error("Error loading data", err);
+    }
+}
+
+// Open modal on Respond click
+document.addEventListener("click", function(e) {
+    if (e.target.classList.contains("respond-button")) {
+        const card = e.target.closest(".inquiry-card");
+        responseForm.dataset.id = card.dataset.id;       // record ID
+        responseForm.dataset.type = card.dataset.type;   // inquiry or feedback
+        modal.style.display = "block";
+    }
+});
+
+// Close modal
+document.querySelector(".close-button").onclick = () => {
+    modal.style.display = "none";
+    responseForm.querySelector("textarea").value = "";
+};
+window.onclick = (event) => {
+    if (event.target === modal) {
+        modal.style.display = "none";
+        responseForm.querySelector("textarea").value = "";
+    }
+};
+
+// Submit response
+// Submit response
+responseForm.onsubmit = async function(e) {
+    e.preventDefault();
+    const id = responseForm.dataset.id;
+    const type = responseForm.dataset.type;
+    const responseText = responseForm.querySelector("textarea").value.trim();
+
+    if (!responseText) {
+        return alert("Please type a response.");
+    }
+
+    try {
+        const res = await fetch("send_responses.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id, type, response: responseText })
+        });
+
+        const result = await res.json();
+
+        if (result.success) {
+            alert("Response sent successfully!");
+            modal.style.display = "none";
+            responseForm.querySelector("textarea").value = "";
+
+            // Change button color for this card
+            const card = document.querySelector(`.inquiry-card[data-id='${id}'][data-type='${type}']`);
+            if (card) {
+                const btn = card.querySelector(".respond-button");
+                btn.textContent = "Responded";
+                btn.classList.add("responded");
+                btn.disabled = true; // prevent clicking again
+            }
+
+        } else {
+            alert("Failed: " + result.error);
+        }
+    } catch (err) {
+        console.error(err);
+        alert("Error sending response.");
+    }
+};
+
+
+document.addEventListener("DOMContentLoaded", loadData);
+
+</script>
+
+</body>
+</html>

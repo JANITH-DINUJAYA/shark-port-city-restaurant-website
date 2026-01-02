@@ -1,0 +1,82 @@
+Register form submitted
+Register form submitted
+POST DATA: {"username":"janith22","email":"janithdinua2004@gmail.com","password":"aaaaaa","confirmPassword":"aaaaaa","user_type":"client","register_btn":""}
+POST DATA: {"username":"janith22","email":"janithdinua2004@gmail.com","password":"aaaaaa","confirmPassword":"aaaaaa","user_type":"client","register_btn":""}
+POST DATA: {"username":"aaaaa","email":"janithdinu2004@gmail.com","password":"aaaaaa","userType":"user","register_btn":""}
+REGISTER FILE HIT
+POST: Array
+(
+    [username] => aaaaa
+    [email] => janithdinu20004@gmail.com
+    [password] => aaaaaa
+    [confirmPassword] => aaaaaa
+    [user_type] => client
+    [register_btn] => 
+)
+
+REGISTER FILE HIT
+POST: Array
+(
+    [username] => janith22
+    [email] => janithdinua2004@gmail.com
+    [password] => aaaaaa
+    [confirmPassword] => aaaaaa
+    [user_type] => client
+    [register_btn] => 
+)
+
+REGISTER FILE HIT
+POST: Array
+(
+    [username] => janith22
+    [email] => janithdinua2004@gmail.com
+    [password] => aaaaaa
+    [confirmPassword] => aaaaaa
+    [user_type] => client
+    [register_btn] => 
+)
+
+REGISTER FILE HIT
+POST: Array
+(
+    [username] => janith22
+    [email] => janithdinua2004@gmail.com
+    [password] => aaaaaa
+    [confirmPassword] => aaaaaa
+    [user_type] => client
+    [register_btn] => 
+)
+
+REGISTER FILE HIT
+POST: Array
+(
+    [username] => janith22
+    [email] => janithdinua2004@gmail.com
+    [password] => aaaaaa
+    [confirmPassword] => aaaaaa
+    [user_type] => client
+    [register_btn] => 
+)
+
+REGISTER FILE HIT
+POST: Array
+(
+    [username] => janith22
+    [email] => janithdinua2004@gmail.com
+    [password] => aaaaaa
+    [confirmPassword] => aaaaaa
+    [user_type] => client
+    [register_btn] => 
+)
+
+REGISTER FILE HIT
+POST: Array
+(
+    [username] => janith22
+    [email] => janithdinua2004@gmail.com
+    [password] => aaaaaa
+    [confirmPassword] => aaaaaa
+    [user_type] => client
+    [register_btn] => 
+)
+

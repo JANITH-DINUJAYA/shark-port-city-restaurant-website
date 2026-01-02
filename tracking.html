@@ -1,0 +1,639 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Order Tracking | Shark Port City</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
+    <meta name="viewport" content="width=device-width, initial-scale=0.9">
+    <script src="https://kit.fontawesome.com/1165876da6.js" crossorigin="anonymous"></script>
+     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+     <link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css"
+/>
+
+    <style>
+        
+:root {
+  --primary-lime: #a4e637;
+  --dark-red: #7b0000;
+  --pure-black: #000000;
+  --dark-bg: #0a0a0a;
+  --card-bg: rgba(15, 15, 15, 0.9);
+  --glass-border: rgba(164, 230, 55, 0.15);
+  --text-primary: #ffffff;
+  --text-secondary: #cccccc;
+  --text-muted: #999999;
+}
+        body {
+            background: rgb(255, 255, 255);
+            color: #333;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding-bottom: 50px;
+        }
+
+        .tracking-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #f8f6f6;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .tracking-container h3 {
+            color: rgb(123, 0, 0);
+            margin-bottom: 10px;
+        }
+        
+        .tracking-container h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .tracking-status {
+            font-size: 1.2em;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .tracking-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            margin-bottom: 40px;
+            padding: 0 20px;
+        }
+
+        .tracking-steps::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: #ddd;
+            transform: translateY(-50%);
+            z-index: 0;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .step-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #ddd;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .step-text {
+            font-size: 0.9em;
+            color: #777;
+        }
+
+        .step.active .step-icon {
+            background-color: rgb(123, 0, 0);
+        }
+
+        .step.active .step-text {
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .thank-you {
+            font-size: 1.1em;
+            color: #555;
+            margin-top: 20px;
+        }
+
+        .go-home-btn {
+            width: 50%;
+            padding: 15px;
+            background-color: rgb(123, 0, 0);
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 30px;
+        }
+
+        .go-home-btn:hover {
+            background-color: rgb(92, 0, 0);
+        }
+
+        /* Styles for the map container */
+        .map-container {
+            width: 100%;
+            height: 400px;
+            margin: 20px 0;
+            background-color: #eee;
+            border-radius: 8px;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        .fd-delivery-card { background: linear-gradient(135deg,var(--card-bg), rgba(20,20,20,0.9)); border:1px solid rgba(123,0,0,0.3); border-radius:28px; padding:40px; margin-bottom:40px; }
+.fd-delivery-header { display:flex; align-items:center; gap:15px; margin-bottom:30px; }
+.fd-delivery-icon { font-size:32px; animation: fd-bounce 2s ease-in-out infinite; }
+@keyframes fd-bounce {0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+.fd-delivery-title { font-size:24px;font-weight:700;color:white;}
+
+/* --- Horizontal Cards Grid --- */
+.fd-delivery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  background:black;
+  padding: 20px;
+}
+
+/* --- Each Card --- */
+.fd-delivery-info-item {
+  background: rgba(41, 40, 40, 0.9);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 24px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  text-align: center;
+  color: white;
+}
+
+.fd-delivery-info-item:hover {
+  border-color: var(--dark-red);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+/* --- Labels & Values --- */
+.fd-info-label {
+  display: block;
+  font-weight: 800;
+  font-size: 18px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  color: white;
+}
+
+.fd-info-value {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--text-primary);
+}
+
+/* --- Responsive: stack on mobile --- */
+@media (max-width: 768px) {
+  .fd-delivery-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Map Section */
+
+.fd-map-header { text-align:center; margin-bottom:30px; }
+.fd-map-title { font-size:28px; font-weight:700; color:black; display:flex; justify-content:center; gap:12px; margin-bottom:8px; }
+.fd-map-subtitle { color:var(--text-secondary); font-size:16px; }
+.fd-map-container { border-radius:24px; overflow:hidden; border:2px solid var(--glass-border); }
+.fd-map-frame { width:100%; height:450px; border:none; }
+
+/* Footer Section */
+.fd-footer-section { background:linear-gradient(135deg, rgb(123, 0, 0), #1c1c1c), rgba(10,10,10,0.9); border:1px solid var(--glass-border); border-radius:24px; padding:50px 40px; text-align:center; margin-bottom: 10px; }
+.fd-footer-emoji { font-size:48px; display:block; margin-bottom:20px; }
+.fd-footer-message { font-size:18px; color:white; margin-bottom:15px; line-height:1.6; }
+.fd-footer-highlight { font-size:22px; font-weight:700; color:var(--primary-lime); display:block; margin-top:10px; }
+
+
+/* Responsive */
+@media(max-width:768px){
+.fd-main-container{padding:0 15px;}
+.fd-hero-section{padding:40px 25px;border-radius:24px;}
+.fd-hero-title{font-size:36px;}
+.fd-progress-timeline{grid-template-columns:1fr;}
+@media(max-width:768px){
+  .fd-delivery-grid {
+    grid-template-columns: 1fr; /* stack vertically on tablets/phones */
+  }
+}
+
+.fd-map-frame{height:350px;}
+.fd-nav-content{flex-direction:column; gap:20px;}
+.fd-nav-links{gap:20px;}
+}
+@media(max-width:480px){
+.fd-hero-title{font-size:28px;}
+.fd-section-title{font-size:24px;}
+.fd-progress-item,.fd-delivery-card,.fd-footer-section{padding:25px 20px;}
+
+}
+.ca a {
+  position: relative; /* make this parent relative */
+  color: #fff; 
+  font-size: 22px;
+  transition: color 0.3s ease;
+}
+
+.cart-count {
+  position: absolute;
+  top: -8px;   /* adjust these values to fit */
+  right: -8px;  /* adjust these values to fit */
+  background: #dc0f0f;
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 3px 7px;
+  border-radius: 50%;
+  min-width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 2px rgba(0,0,0,0.3);
+  z-index: 10;
+  font-family: 'Poppins', sans-serif;
+  animation: none; /* remove animation */
+}
+    </style>
+</head>
+<body>
+     <div class="header">
+    <img src="images/Group 17.png" class="logo">
+    <nav>
+        <ul>
+            <li><a href="index.php">Home</a></li>
+            <li class="dropdown">
+                <a href="#">The Menu ▾</a>
+                <ul class="dropdown-content">
+                    <li><a href="category.php?category=Appertizers">Appetizer</a></li>
+                    <li><a href="category.php?category=Soups">Soups & Salads</a></li>
+                    <li><a href="category.php?category=Rice%20%26%20Noodles">Rice & Salads</a></li>
+                    <li><a href="category.php?category=Seafood">Seafood Delight</a></li>
+                    <li><a href="category.php?category=Grilled_Specials">Meat Selection</a></li>
+                    <li><a href="category.php?category=Sizzlers">Sizzlers</a></li>
+                    <li><a href="category.php?category=Veggie Delight">Veggie Delights</a></li>
+                    <li><a href="category.php?category=Pizza%20%26%20Pasta">Pizza & Pasta</a></li>
+                    <li><a href="category.php?category=Snacks">Snacks</a></li>
+                    <li><a href="category.php?category=Desserts">Desserts</a></li>
+                    <li><a href="category.php?category=Beverages">Beverages</a></li>
+                     <li><a href="category.php?category=Beverages">Beverages</a></li>
+                     <li><a href="category.php?category=Chef_Specials">Chef's Special</a></li>
+                </ul>
+            </li>
+            <li><a href="location.html">Our Location</a></li>
+            <li><a href="reservation.html">Reservation</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            
+            <div class="ca">
+            <a href="cart.html"><i class="fa-solid fa-cart-shopping"></i>
+               <span id="cart-count" class="cart-count">0</span></a>
+      <a href="setting.html"><i class="fa-solid fa-gear"></i></a></div>
+        </ul>
+        <a href="login.html" class="accounts-btn">Accounts</a>
+    </nav>
+</div>
+<section class="fd-delivery-grid">
+  <!-- Partner Info Card -->
+  <div class="fd-delivery-info-item">
+    <span class="fd-info-label">Deliver Partner</span>
+    <span class="fd-info-value" id="PartnerName">Loading</span><br>
+    <span class="fd-info-label">Phone</span>
+    <span class="fd-info-value" id="partnerPhone">Loading</span>
+  </div>
+
+  <!-- Items Card -->
+  <div class="fd-delivery-info-item">
+    <span class="fd-info-label">Items</span>
+    <div id="assignedOrders">Loading<br>Loading</div>
+  </div>
+
+  <!-- Total Card -->
+  <div class="fd-delivery-info-item">
+    <span class="fd-info-label">Total</span>
+    <span class="fd-info-value" id="orderTotal">Rs. 00.00</span>
+  </div>
+</section>
+
+    <div class="tracking-container">
+        <h3>Order #12345</h3>
+        <h1>Payment Confirmed!</h1>
+        <p class="tracking-status">Your order is being prepared and is on its way!</p>
+        
+        <div class="tracking-steps">
+            <div class="step active" id="step-confirmed">
+                <div class="step-icon"><i class="fas fa-check"></i></div>
+                <div class="step-text">Confirmed</div>
+            </div>
+            <div class="step" id="step-prepared">
+                <div class="step-icon"><i class="fas fa-utensils"></i></div>
+                <div class="step-text">Prepared</div>
+            </div>
+            <div class="step" id="step-out-for-delivery">
+                <div class="step-icon"><i class="fas fa-motorcycle"></i></div>
+                <div class="step-text">Out for Delivery</div>
+            </div>
+            <div class="step" id="step-delivered">
+                <div class="step-icon"><i class="fas fa-home"></i></div>
+                <div class="step-text">Delivered</div>
+            </div>
+        </div>
+          <!-- Map Section -->
+    <section class="fd-map-section">
+      <div class="fd-map-header">
+        <h2 class="fd-map-title">📍 Live Delivery Tracking</h2>
+      </div>
+      <div class="fd-map-container">
+  <div id="map" style="width: 100%; height: 450px; border-radius:24px;"></div>
+</div>
+
+    </section>
+
+    <!-- Footer -->
+    <section class="fd-footer-section">
+      <span class="fd-footer-emoji">🍽️</span>
+      <p class="fd-footer-message">
+        Thank you for choosing Shark Port City!<br>
+       
+      </p>
+      <span class="fd-footer-highlight">Estimated Delivery: Loading</span>
+    </section>
+    
+
+
+        <p class="thank-you">Thank you for your order!</p>
+        <button id="go-home-btn" class="go-home-btn">Continue Shopping</button>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="contact">
+                <img src="images/Group 17.png" class="logo">
+                <h2>Shark Port City</h2>
+                <p>Email: Info@Greenlife.com</p>
+                <p>Phone: +077 344 05 04</p>
+                <p>Address: Beach Plaza, Port City, Colombo 01</p>
+                <p>© Shark Port city. All rights reserved</p>
+            </div>
+            <div class="footer-content">
+                <ul class="social-icons">
+                    <li><a href=""><i class="fab fa-facebook"></i></a></li>
+                    <li><a href=""><i class="fab fa-twitter"></i></a></li>
+                    <li><a href=""><i class="fab fa-instagram"></i></a></li>
+                    <li><a href=""><i class="fab fa-whatsapp"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.22.0/mapbox-gl.js'></script>
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.2.0/mapbox-gl-directions.js'></script>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+<script>
+  // ===== Firebase Config =====
+  const firebaseConfig = {
+    apiKey: "AIzaSyCKjyIBmC3WqSvtB7ynYE4YEM-ryz-PtEg",
+    authDomain: "shark-port-city.firebaseapp.com",
+    projectId: "shark-port-city",
+    storageBucket: "shark-port-city.appspot.com",
+    databaseURL: "https://shark-port-city-default-rtdb.asia-southeast1.firebasedatabase.app",
+    messagingSenderId: "469906666653",
+    appId: "1:469906666653:web:94e866e387252ed21ed074",
+    measurementId: "G-BM1EP1M2CY"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+  const auth = firebase.auth();
+ function updateTrackingSteps(currentStepIndex) {
+  const steps = ['step-confirmed', 'step-prepared', 'step-out-for-delivery'];
+
+  steps.forEach((id, index) => {
+    const el = document.getElementById(id);
+    if(!el) return;
+
+    if(index <= currentStepIndex) el.classList.add('active');
+    else el.classList.remove('active');
+  });
+}
+
+
+  // ===== Map Initialization =====
+  const map = L.map('map').setView([6.9, 79.9], 13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  let customerMarker = null;
+  let partnerMarker = null;
+  let routeLine = null;
+function getDeliveryCharge(subtotal) {
+  if (subtotal >= 5000) return 0;       // Free delivery for Rs.5000+
+  if (subtotal >= 2000) return 200;     // Rs.200 for Rs.2000–4999
+  return 300;                           // Rs.300 below Rs.2000
+}
+  // ===== Helper: Update Order Cards & ETA =====
+  function updateDeliveryCards(order, partner) {
+    document.getElementById('PartnerName').innerText = partner.full_name || "N/A";
+    document.getElementById('partnerPhone').innerText = partner.phone || "N/A";
+
+    let itemsHTML = "";
+    if(order.items){
+      for(let key in order.items){
+        const item = order.items[key];
+        itemsHTML += `${item.name} × ${item.quantity}<br>`;
+      }
+    }
+    document.getElementById('assignedOrders').innerHTML = itemsHTML;
+   // Calculate dynamic delivery charge
+const subtotal = Number(order.subtotal || 0);
+const deliveryCharge = getDeliveryCharge(subtotal);
+document.getElementById('orderTotal').innerText = `Rs. ${(subtotal + deliveryCharge).toFixed(2)}`;
+
+
+
+    const customerLat = parseFloat(order.customer?.address?.lat);
+    const customerLon = parseFloat(order.customer?.address?.lon);
+    const partnerLat = parseFloat(partner.lat);
+    const partnerLon = parseFloat(partner.lon);
+
+    if (!isNaN(customerLat) && !isNaN(customerLon) && !isNaN(partnerLat) && !isNaN(partnerLon)) {
+      const R = 6371; // km
+      const dLat = (customerLat - partnerLat) * Math.PI / 180;
+      const dLon = (customerLon - partnerLon) * Math.PI / 180;
+      const a = Math.sin(dLat/2)**2 +
+                Math.cos(partnerLat * Math.PI/180) * Math.cos(customerLat * Math.PI/180) *
+                Math.sin(dLon/2)**2;
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      const distance = R * c;
+      const speed = 25; // km/h
+      const etaMinutes = Math.ceil((distance / speed) * 60);
+      document.querySelector('.fd-footer-highlight').innerText = `Estimated Delivery: ${etaMinutes} min`;
+    } else {
+      document.querySelector('.fd-footer-highlight').innerText = "Estimated Delivery: N/A";
+    }
+  }
+
+  // ===== Auth Listener =====
+  auth.onAuthStateChanged(user => {
+    if(!user){
+      alert("Please log in to view your orders!");
+      window.location.href = "login.html";
+      return;
+    }
+
+    const loggedUserId = user.uid;
+console.log("Logged UID:", loggedUserId);
+
+    // ===== Query Orders by userId =====
+    const ordersRef = db.ref('orders');
+    ordersRef.orderByChild('userId').equalTo(loggedUserId).on('value', snapshot => {
+      const orders = snapshot.val();
+      if(!orders){
+        console.warn("No orders found for this user");
+        return;
+      }
+
+      // Use the latest order
+      const orderKeys = Object.keys(orders);
+      const latestOrderKey = orderKeys[orderKeys.length - 1];
+      const order = orders[latestOrderKey];
+
+      const customerLatLng = [
+        parseFloat(order.customer?.address?.lat || 6.9),
+        parseFloat(order.customer?.address?.lon || 79.9)
+      ];
+
+      // Customer Marker
+      if(!customerMarker){
+        customerMarker = L.marker(customerLatLng, {
+          icon: L.icon({
+            iconUrl: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+            iconSize: [32,32]
+          })
+        }).addTo(map).bindPopup("Customer");
+      } else {
+        customerMarker.setLatLng(customerLatLng);
+      }
+
+      // Partner Marker
+      const partnerId = order.partnerId;
+      if(!partnerId) return;
+
+   // Real-time listener for partner location
+db.ref('partners/' + partnerId).on('value', partnerSnap => {
+  const partner = partnerSnap.val();
+  if(!partner) return;
+
+  const partnerLatLng = [Number(partner.lat), Number(partner.lon)];
+
+  if(!partnerMarker){
+    partnerMarker = L.marker(partnerLatLng, {
+      icon: L.icon({
+        iconUrl: 'images/motorbike.png',
+        iconSize: [32,32]
+      })
+    }).addTo(map).bindPopup(partner.full_name);
+  } else {
+    partnerMarker.setLatLng(partnerLatLng);
+  }
+
+  // Update route line
+// Update route line safely
+if (window.routeControl && window.routeControl._map) {
+    map.removeControl(window.routeControl);
+}
+
+window.routeControl = L.Routing.control({
+  waypoints: [
+    L.latLng(partnerLatLng[0], partnerLatLng[1]),
+    L.latLng(customerLatLng[0], customerLatLng[1])
+  ],
+  lineOptions: {
+    styles: [{ color: 'cyan', weight: 5 }],
+    extendToWaypoints: true,
+    missingRouteTolerance: 0
+  },
+  routeWhileDragging: false,
+  addWaypoints: false,
+  draggableWaypoints: false,
+  fitSelectedRoutes: true,
+  show: false,
+  createMarker: function () { return null; } // prevent extra markers
+}).addTo(map);
+
+
+  // Fit map bounds
+  const bounds = L.latLngBounds([customerLatLng, partnerLatLng]);
+  map.fitBounds(bounds, {padding:[50,50]});
+
+  // Update Cards & ETA
+  updateDeliveryCards(order, partner);
+});
+
+      const orderStatus = order.status || 'confirmed';
+
+// If status is not completed, animate steps automatically
+if(orderStatus !== 'completed'){
+  animateTracking();
+} else {
+  // If already completed, just mark all steps as active
+  updateTrackingSteps(3); // 3 = Delivered
+}
+
+      });
+    });
+  
+ function animateTracking() {
+  const stepsCount = 3; // Confirmed, Prepared, Out for Delivery, Delivered
+  let step = 0;
+
+  const interval = setInterval(() => {
+    updateTrackingSteps(step);
+    step++;
+
+    // Stop at the last step
+    if(step >= stepsCount) {
+      clearInterval(interval);
+    }
+  }, 2000); // 2 seconds per step, adjust as needed
+}
+
+  // ===== Go Home Button =====
+  document.getElementById('go-home-btn').addEventListener('click', () => {
+    window.location.href = 'index.php';
+  });
+  function updateCartCount() {
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const count = cart.reduce((total, item) => total + item.quantity, 0);
+  const cartCountEl = document.getElementById('cart-count');
+  if (cartCountEl) {
+    cartCountEl.textContent = count;
+updateCartCount();
+  }
+} document.addEventListener('DOMContentLoaded', () => {
+    updateCartCount(); // <-- updates cart badge on page load
+}); 
+</script>
+
+</body>
+</html>

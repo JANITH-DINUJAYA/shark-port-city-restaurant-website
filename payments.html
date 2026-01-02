@@ -1,0 +1,357 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Payment | Shark Port City</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
+    <meta name="viewport" content="width=device-width, initial-scale=0.9">
+    <script src="https://kit.fontawesome.com/1165876da6.js" crossorigin="anonymous"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
+    <style>
+        body {
+            background: rgb(255, 255, 255);
+            color: #333;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding-bottom: 50px;
+        }
+
+        .payment-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #f8f6f6;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .payment-container h3 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .order-summary, .customer-info {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        .order-summary h4, .customer-info h4 {
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.95em;
+        }
+
+        .total-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: rgb(123, 0, 0);
+            text-align: right;
+            margin-top: 15px;
+        }
+
+        .subtotal-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .customer-info p {
+            line-height: 1.6;
+        }
+
+        .confirm-payment-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: rgb(123, 0, 0);
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .confirm-payment-btn:hover {
+            background-color: rgb(92, 0, 0);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="images/Group 17.png" class="logo">
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li class="dropdown">
+                    <a href="#">The Menu ▾</a>
+                    <ul class="dropdown-content">
+                         <li><a href="category.php?category=Appertizers">Appetizer</a></li>
+                    <li><a href="category.php?category=Soups">Soups & Salads</a></li>
+                    <li><a href="category.php?category=Rice%20%26%20Noodles">Rice & Salads</a></li>
+                    <li><a href="category.php?category=Seafood">Seafood Delight</a></li>
+                    <li><a href="category.php?category=Grilled_Specials">Meat Selection</a></li>
+                    <li><a href="category.php?category=Sizzlers">Sizzlers</a></li>
+                    <li><a href="category.php?category=Veggie Delight">Veggie Delights</a></li>
+                    <li><a href="category.php?category=Pizza%20%26%20Pasta">Pizza & Pasta</a></li>
+                    <li><a href="category.php?category=Snacks">Snacks</a></li>
+                    <li><a href="category.php?category=Desserts">Desserts</a></li>
+                    <li><a href="category.php?category=Beverages">Beverages</a></li>
+                     
+                     <li><a href="category.php?category=Chef_Specials">Chef's Special</a></li>
+                    </ul>
+                </li>
+                <li><a href="location.html">Our Location</a></li>
+                <li><a href="reservation.html">Reservation</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <div class="ca">
+                    <a href="cart.html"><i class="fa-solid fa-cart-shopping"></i>
+               </a>
+                    <a href="setting.html"><i class="fa-solid fa-gear"></i></a>
+                </div>
+            </ul>
+            <a href="login.html" class="accounts-btn">Accounts</a>
+        </nav>
+    </div>
+
+    <div class="payment-container">
+        <h3>Order & Payment Details</h3>
+
+        <div class="order-summary">
+            <h4>Your Order</h4>
+            <div id="order-items-list"></div>
+            <div class="subtotal-row">
+                <span>Subtotal:</span>
+                <span id="order-subtotal"></span>
+            </div>
+            <div class="subtotal-row">
+                <span>Delivery Charge:</span>
+                <span id="delivery-charge"></span>
+            </div>
+            <div id="order-total" class="total-price"></div>
+        </div>
+
+        <div class="customer-info">
+            <h4>Delivery Information</h4>
+            <p><strong>Name:</strong> <span id="customer-name"></span></p>
+            <p><strong>Phone:</strong> <span id="customer-phone"></span></p>
+            <p><strong>Email:</strong> <span id="customer-email"></span></p>
+            <p><strong>Location:</strong> <span id="customer-location"></span></p>
+        </div>
+
+        <!-- Form-based payment -->
+        <form method="post" action="pay.php" id="payment-form">
+            <input type="hidden" name="amount" id="payment-amount">
+            <input type="hidden" name="order_id" id="payment-order-id">
+       <input type="hidden" name="name" id="payment-name">
+           <input type="hidden" name="email" id="payment-email">
+           <input type="hidden" name="phone" id="payment-phone">
+
+            <button type="submit" class="confirm-payment-btn">Confirm Payment</button>
+        </form>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="contact">
+                <img src="images/Group 17.png" class="logo">
+                <h2>Shark Port City</h2>
+                <p>Email: Info@Greenlife.com</p>
+                <p>Phone: +077 344 05 04</p>
+                <p>Address: Beach Plaza, Port City, Colombo 01</p>
+                <p>© Shark Port city. All rights reserved</p>
+            </div>
+            <div class="footer-content">
+                <ul class="social-icons">
+                    <li><a href=""><i class="fab fa-facebook"></i></a></li>
+                    <li><a href=""><i class="fab fa-twitter"></i></a></li>
+                    <li><a href=""><i class="fab fa-instagram"></i></a></li>
+                    <li><a href=""><i class="fab fa-whatsapp"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+  const orderItemsList = document.getElementById('order-items-list');
+  const orderSubtotalDisplay = document.getElementById('order-subtotal');
+  const deliveryChargeDisplay = document.getElementById('delivery-charge');
+  const orderTotalDisplay = document.getElementById('order-total');
+  const paymentAmountInput = document.getElementById('payment-amount');
+  const paymentOrderIdInput = document.getElementById('payment-order-id');
+
+  const customerNameSpan = document.getElementById('customer-name');
+  const customerPhoneSpan = document.getElementById('customer-phone');
+  const customerEmailSpan = document.getElementById('customer-email');
+  const customerLocationSpan = document.getElementById('customer-location');
+  const paymentNameInput = document.getElementById('payment-name');
+  const paymentEmailInput = document.getElementById('payment-email');
+  const paymentPhoneInput = document.getElementById('payment-phone');
+
+  // 🟢 Dynamic Delivery Charge System
+  function getDeliveryCharge(subtotal) {
+    if (subtotal >= 5000) return 0;       // Free delivery for Rs.5000+
+    if (subtotal >= 2000) return 200;     // Rs.100 for Rs.2000–4999
+    return 300;                           // Rs.200 below Rs.2000
+  }
+
+  let subtotal = 0;
+
+  // --- Load Cart ---
+  const cartItems = JSON.parse(localStorage.getItem('cart') || "[]");
+  if (cartItems.length > 0) {
+    cartItems.forEach(item => {
+      const itemElement = document.createElement('div');
+      itemElement.classList.add('order-item');
+      itemElement.innerHTML = `
+        <span>${item.name} x ${item.quantity}</span>
+        <span>Rs. ${(item.price * item.quantity).toFixed(2)}</span>
+      `;
+      orderItemsList.appendChild(itemElement);
+      subtotal += item.price * item.quantity;
+    });
+  } else {
+    orderItemsList.innerHTML = '<p>Your cart is empty.</p>';
+  }
+
+  //  Apply dynamic delivery charge
+  const deliveryCharge = getDeliveryCharge(subtotal);
+  const finalTotal = subtotal + deliveryCharge;
+
+  orderSubtotalDisplay.textContent = `Rs. ${subtotal.toFixed(2)}`;
+  deliveryChargeDisplay.textContent = deliveryCharge === 0 
+    ? 'Free Delivery'
+    : `Rs. ${deliveryCharge.toFixed(2)}`;
+  orderTotalDisplay.textContent = `Order Total: Rs. ${finalTotal.toFixed(2)}`;
+
+  // --- Set form hidden values ---
+  paymentAmountInput.value = finalTotal.toFixed(2);
+  paymentOrderIdInput.value = 'ORDER-' + Date.now();
+
+  // --- Load customer info ---
+  const customerDetails = JSON.parse(localStorage.getItem('customerDetails') || "{}");
+  customerNameSpan.textContent = customerDetails.name || "Not provided";
+  customerPhoneSpan.textContent = customerDetails.phone || "Not provided";
+  customerEmailSpan.textContent = customerDetails.email || "Not provided";
+  if (typeof customerDetails.address === 'object' && customerDetails.address !== null) {
+    customerLocationSpan.textContent = `Lat: ${customerDetails.address.lat}, Lon: ${customerDetails.address.lon}`;
+  } else if (typeof customerDetails.address === 'string') {
+    customerLocationSpan.textContent = customerDetails.address;
+  } else {
+    customerLocationSpan.textContent = "Not provided";
+  }
+
+  paymentNameInput.value = customerDetails.name || "";
+  paymentEmailInput.value = customerDetails.email || "";
+  paymentPhoneInput.value = customerDetails.phone || "";
+
+  // --- Update cart count in navbar ---
+  function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const count = cart.reduce((total, item) => total + item.quantity, 0);
+    const cartCountEl = document.getElementById('cart-count');
+    if (cartCountEl) {
+      cartCountEl.textContent = count;
+    }
+  }
+
+  updateCartCount();
+});
+
+// 🔥 Firebase Setup & Order Submission
+const firebaseConfig = {
+  apiKey: "AIzaSyCKjyIBmC3WqSvtB7ynYE4YEM-ryz-PtEg",
+  authDomain: "shark-port-city.firebaseapp.com",
+  projectId: "shark-port-city",
+  databaseURL: "https://shark-port-city-default-rtdb.asia-southeast1.firebasedatabase.app/",
+  storageBucket: "shark-port-city.appspot.com",
+  messagingSenderId: "469906666653",
+  appId: "1:469906666653:web:94e866e387252ed21ed074",
+  measurementId: "G-BM1EP1M2CY",
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
+// 🧾 Save order to Firebase
+document.getElementById('payment-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    // Wait for Firebase Auth to be ready
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (!user) {
+            alert("You must be logged in to place an order.");
+            return;
+        }
+
+        const cartItems = JSON.parse(localStorage.getItem('cart') || "[]");
+        const customer = JSON.parse(localStorage.getItem('customerDetails') || "{}");
+        const subtotal = parseFloat(document.getElementById('order-subtotal').textContent.replace('Rs. ', '')) || 0;
+        const deliveryText = document.getElementById('delivery-charge').textContent.trim();
+        const deliveryCharge = deliveryText === 'Free Delivery' ? 0 : parseFloat(deliveryText.replace('Rs. ', '')) || 0;
+        const total = subtotal + deliveryCharge;
+        const orderId = document.getElementById('payment-order-id').value;
+        const timestamp = new Date().toISOString();
+
+        const orderData = {
+            customer: {
+                name: customer.name || "",
+                phone: customer.phone || "",
+                email: customer.email || "",
+                address: typeof customer.address === 'object' ? customer.address : { full: customer.address || "" }
+            },
+            items: cartItems,
+            subtotal: subtotal.toFixed(2),
+            deliveryCharge: deliveryCharge.toFixed(2),
+            total: total.toFixed(2),
+            status: "Processing",
+            timestamp: timestamp,
+            userId: user.uid,
+            partnerId: "Not Assigned"
+        };
+
+        const newOrderRef = database.ref('orders').push();
+        newOrderRef.set(orderData)
+            .then(() => {
+                console.log("✅ Order saved successfully!");
+                
+                // Clear cart only after success
+                localStorage.removeItem('cart');
+                localStorage.removeItem('customerDetails');
+                localStorage.setItem('paymentSuccess', 'true');
+
+                alert("Your order has been placed successfully! Redirecting to payment...");
+
+                // Submit the form after saving
+                e.target.submit();
+            })
+            .catch(error => {
+                console.error("❌ Error saving order:", error);
+                alert("Failed to save order. Please try again.");
+            });
+    });
+});
+
+</script>
+
+   
+</body>
+</html>

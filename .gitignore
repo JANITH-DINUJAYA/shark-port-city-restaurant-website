@@ -1,0 +1,9 @@
+# Ignore Firebase credentials file 
+firebase_service_account.json 
+ 
+# Ignore specific PHP files with secrets 
+chatt.php 
+delivery/chat.php 
+ 
+# Ignore all .env files 
+.env 

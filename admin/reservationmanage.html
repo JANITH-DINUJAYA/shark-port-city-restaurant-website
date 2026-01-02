@@ -1,0 +1,451 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Shark Port City</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="https://kit.fontawesome.com/1165876da6.js" crossorigin="anonymous"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+            rel="stylesheet"
+        />
+    </head>
+    <body>
+        <style>
+            /* --- CSS Variables --- */
+            :root {
+                --primary-dark: #2c3e50;
+                --secondary-light: #f4f7f6;
+                --text-color: #333;
+                --white: #ffffff;
+                --accent-green: #2ecc71;
+                --accent-blue: #3498db;
+                --accent-purple: #9b59b6;
+                --accent-orange: #f39c12;
+                --online-status: #34c759;
+            }
+
+            /* --- General & Main Container Styles --- */
+            body {
+                background-color: var(--secondary-light);
+                color: var(--text-color);
+                margin: 0;
+                font-family: 'Poppins', sans-serif;
+                display: flex;
+                min-height: 100vh;
+            }
+
+            .main-content {
+                flex-grow: 1;
+                padding: 50px;
+                display: flex;
+                flex-direction: column;
+                gap: 40px;
+            }
+
+            .header-bar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+
+            .back-button {
+                background-color: var(--primary-dark);
+                color: var(--white);
+                border: none;
+                padding: 10px 20px;
+                border-radius: 8px;
+                text-decoration: none;
+                transition: background-color 0.3s ease;
+            }
+
+            .back-button:hover {
+                background-color: #34495e;
+            }
+
+            .inquiry-section {
+                margin-bottom: 40px;
+            }
+
+            .inquiry-section h2 {
+                font-weight: 600;
+                margin-bottom: 20px;
+                border-left: 5px solid var(--accent-orange);
+                padding-left: 15px;
+            }
+
+            .inquiry-grid {
+                display: grid;
+                gap: 30px;
+            }
+
+            .inquiry-card {
+                background-color: var(--white);
+                border-radius: 12px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                padding: 25px;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+                border: 1px solid #e0e0e0;
+                position: relative;
+            }
+
+            .inquiry-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            }
+            
+            .inquiry-type {
+                font-weight: 600;
+                color: var(--accent-orange);
+                margin-bottom: 5px;
+            }
+            
+            .inquiry-card h3 {
+                font-size: 1.25rem;
+                margin-bottom: 10px;
+            }
+            
+            .inquiry-card p {
+                color: #666;
+                margin-bottom: 15px;
+                line-height: 1.6;
+            }
+
+ 
+
+            .respond-button {
+                background-color: var(--accent-orange);
+                color: var(--white);
+                border: none;
+                padding: 10px 20px;
+                border-radius: 8px;
+                text-decoration: none;
+                transition: background-color 0.3s ease;
+                cursor: pointer;
+            }
+
+            .respond-button:hover {
+                background-color: #e67e22;
+            }
+
+            
+
+            .modal-content {
+                background-color: #fefefe;
+                margin: 5% auto;
+                padding: 30px;
+                border: 1px solid #888;
+                width: 80%;
+                max-width: 600px;
+                border-radius: 12px;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            }
+
+            .close-button {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+
+            .close-button:hover,
+            .close-button:focus {
+                color: #000;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+            .modal-content h2 {
+                margin-top: 0;
+                color: var(--primary-dark);
+            }
+
+            .modal-content textarea {
+                width: 100%;
+                padding: 10px;
+                font-size: 1rem;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                resize: vertical;
+                min-height: 150px;
+                margin-bottom: 15px;
+            }
+            
+            .modal-content .submit-button {
+                background-color: #f70404;
+                color: var(--white);
+                border: none;
+                padding: 12px 25px;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+
+            .modal-content .submit-button:hover {
+                background-color: #f70404;
+            }
+
+            
+            nav {
+                background-color: #000000;
+                width: 350px;
+                padding: 30px 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+                position: sticky;
+                top: 0;
+                left: 0;
+                height: 100vh;
+            }
+            .logo { margin-bottom: 20px; }
+            .logo img { width: 150px; }
+            .profile-status { display: flex; align-items: center; gap: 8px; font-size: 14px; margin-bottom: 20px; color: var(--white); }
+            .online-indicator { width: 10px; height: 10px; background-color: var(--online-status); border-radius: 50%; animation: pulse-online 1.5s infinite; }
+            @keyframes pulse-online { 0% { box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(52, 199, 89, 0); } 100% { box-shadow: 0 0 0 0 rgba(52, 199, 89, 0); } }
+            nav ul { list-style: none; padding: 0; width: 100%; margin: 0; }
+            nav ul li { position: relative; }
+            nav ul li a { display: block; padding: 20px 30px; color: var(--white); text-decoration: none; font-size: 16px; transition: background-color 0.3s ease, padding-left 0.3s ease; cursor: pointer; }
+            nav ul li a:hover { background-color: rgba(255, 255, 255, 0.1); padding-left: 40px; text-decoration: underline solid #f70404; text-decoration-thickness: 3px; }
+            .dropdown-content { display: none; position: absolute; top: 100%; left: 0; background-color: #000000; width: 100%; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); z-index: 100; border-radius: 0 0 8px 8px; }
+            .dropdown:hover .dropdown-content { display: block; }
+            .dropdown-content li a:hover { background-color: #1a1a1a; padding-left: 45px; }
+            @media (max-width: 992px) { .main-content { padding: 20px; } }
+            .main-content { flex-grow:1; padding:30px; }
+    .reservation-card { background:#fff; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); margin-bottom:20px; }
+    .reservation-actions button { margin-right:10px; }
+    .modal textarea { width:100%; border:1px solid #ccc; border-radius:8px; padding:10px; }
+ 
+        </style>
+
+        <nav>
+            <div class="logo">
+                <img src="../images/Group 17.png" alt="Shark Port City Logo">
+            </div>
+            <div class="profile-status">
+                <span class="online-indicator"></span>
+                Online
+            </div>
+            <ul>
+                <li><a href="home.php">Dashboard</a></li>
+                <li class="dropdown">
+                    <a href="#">User Management ▾</a>
+                    <ul class="dropdown-content">
+                        <li><a href="customer.html">Customer</a></li>
+                        <li><a href="partner.html">Delivery Partners</a></li>
+                        <li><a href="staff.html">Staff</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Content Management ▾</a>
+                    <ul class="dropdown-content">
+                        <li><a href="banners.html">Banners</a></li>
+                        <li><a href="photogallery.html">Photo Galleries</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Dish Management ▾</a>
+                    <ul class="dropdown-content">
+                        <li><a href="Menumanage.php">Menus</a></li>
+                        <li><a href="promotionmanagement.php">Promotions</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Order & Reservation Management▾</a>
+                    <ul class="dropdown-content">
+                        <li><a href="ordermanage.html">Orders</a></li>
+                        <li><a href="reservationmanage.html">Reservations</a></li>
+                    </ul>
+                </li>
+                <li><a href="inquiries.html">Inquiries</a></li>
+                 <li><a href="send-email.php">Notifications</a></li>
+                <li><a href="login.html">Log Out</a></li>
+            </ul>
+        </nav>
+
+        <div class="main-content" id="reservationContainer">
+    <div class="header-bar">
+        <a href="home.php" class="back-button">Back to Dashboard</a>
+    </div>
+</div>
+
+<!-- Reschedule Modal -->
+<div class="modal fade" id="rescheduleModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content p-3">
+      <div class="modal-header">
+        <h5 class="modal-title">Reschedule Reservation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label>New Date & Time</label>
+        <input type="datetime-local" id="newDateTime" class="form-control mb-2"/>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-success" onclick="submitReschedule()">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+let currentResId = null;
+let currentEmail = null;
+
+async function loadReservations() {
+    const res = await fetch('get_reservations.php');
+    const data = await res.json();
+
+    const container = document.getElementById('reservationContainer');
+    container.innerHTML = `
+        <div class="header-bar">
+            <a href="home.php" class="back-button">Back to Dashboard</a>
+        </div>
+    `;
+
+    Object.entries(data).forEach(([orderId, resData]) => {
+        const card = document.createElement('div');
+        card.className = 'reservation-card';
+        card.dataset.id = orderId;
+
+        // Determine if buttons should be disabled
+        const isDisabled = resData.status && resData.status !== 'pending';
+
+        card.innerHTML = `
+            <h4>Reservation #${orderId}</h4>
+            <p><b>Name:</b> ${resData.name}</p>
+            <p><b>Email:</b> ${resData.email}</p>
+            <p><b>Phone:</b> ${resData.phone}</p>
+            <p><b>Table Type:</b> ${resData.tableType}</p>
+            <p><b>Guests:</b> ${resData.guests}</p>
+            <p><b>Total Amount:</b> ${resData.amount}</p>
+            <p><b>Date:</b> ${resData.date}</p>
+            <p><b>Time:</b> ${resData.time}</p>
+            <div class="reservation-actions">
+                <button class="btn btn-success btn-sm" onclick="updateReservation('accepted','${orderId}','${resData.email}')" ${isDisabled ? 'disabled' : ''}>Accept</button>
+                <button class="btn btn-danger btn-sm" onclick="updateReservation('rejected','${orderId}','${resData.email}')" ${isDisabled ? 'disabled' : ''}>Reject</button>
+                <button class="btn btn-warning btn-sm" onclick="openRescheduleModal('${orderId}','${resData.email}')" ${isDisabled ? 'disabled' : ''}>Reschedule</button>
+            </div>
+        `;
+
+        // Add status label if already acted upon
+        if (isDisabled) {
+            let statusLabel = document.createElement('p');
+            statusLabel.innerHTML = `<b>Status:</b> ${resData.status}`;
+            card.appendChild(statusLabel);
+        }
+
+        container.appendChild(card);
+    });
+}
+
+
+
+function updateReservation(action, resId, email){
+    fetch('update_reservations.php', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ reservationId: resId, action: action, email: email })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.success){
+            alert(`Reservation ${action} successfully. Email sent to ${email}`);
+            
+            // Find the card element
+            const card = document.querySelector(`.reservation-card[data-id='${resId}']`);
+            if(card){
+                // Disable buttons
+                const buttons = card.querySelectorAll('button');
+                buttons.forEach(btn => btn.disabled = true);
+
+                // Add status label at bottom
+                let statusLabel = document.createElement('p');
+                statusLabel.innerHTML = `<b>Status:</b> ${action}`;
+                card.appendChild(statusLabel);
+
+                // Move the card to bottom
+                card.parentNode.appendChild(card);
+            }
+        } else {
+            alert(`Error: ${data.error}`);
+        }
+    });
+}
+
+function submitReschedule(){
+    let newDateTime = document.getElementById('newDateTime').value;
+    if(!newDateTime){
+        alert('Please select a new date & time');
+        return;
+    }
+    const [date, time] = newDateTime.split('T');
+
+    fetch('update_reservations.php', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ 
+            reservationId: currentResId,
+            action: 'rescheduled', 
+            date, 
+            time, 
+            email: currentEmail 
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.success){
+            alert(`Reservation rescheduled successfully. Email sent to ${currentEmail}`);
+            rescheduleModal.hide();
+            document.getElementById('newDateTime').value = '';
+
+            // Update card in place
+            const card = document.querySelector(`.reservation-card[data-id='${currentResId}']`);
+            if(card){
+                const buttons = card.querySelectorAll('button');
+                buttons.forEach(btn => btn.disabled = true);
+
+                // Add status label
+                let statusLabel = document.createElement('p');
+                statusLabel.innerHTML = `<b>Status:</b> Rescheduled to ${date} ${time}`;
+                card.appendChild(statusLabel);
+
+                // Move card to bottom
+                card.parentNode.appendChild(card);
+            }
+        } else {
+            alert(`Error: ${data.error}`);
+        }
+    })
+    .catch(err => alert(`Unexpected error: ${err}`));
+}
+function openRescheduleModal(resId, email) {
+    currentResId = resId;
+    currentEmail = email;
+
+    // Clear old datetime
+    document.getElementById('newDateTime').value = '';
+
+    // Show modal using Bootstrap API
+    const modal = new bootstrap.Modal(document.getElementById('rescheduleModal'));
+    modal.show();
+
+    // Store modal instance globally so we can hide it later
+    window.rescheduleModal = modal;
+}
+
+
+
+// Load on page load
+loadReservations();
+</script>

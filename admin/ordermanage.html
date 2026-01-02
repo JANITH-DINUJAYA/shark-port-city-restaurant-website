@@ -1,0 +1,540 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Shark Port City</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="https://kit.fontawesome.com/1165876da6.js" crossorigin="anonymous"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+            rel="stylesheet"
+        />
+    </head>
+    <body>
+        <style>
+            /* --- CSS Variables --- */
+            :root {
+                --primary-dark: #2c3e50;
+                --secondary-light: #f4f7f6;
+                --text-color: #333;
+                --white: #ffffff;
+                --accent-green: #2ecc71;
+                --accent-blue: #3498db;
+                --accent-purple: #9b59b6;
+                --accent-orange: #f39c12;
+                --online-status: #34c759;
+            }
+
+            /* --- General & Main Container Styles --- */
+            body {
+                background-color: var(--secondary-light);
+                color: var(--text-color);
+                margin: 0;
+                font-family: 'Poppins', sans-serif;
+                display: flex;
+                min-height: 100vh;
+            }
+
+            .main-content {
+                flex-grow: 1;
+                padding: 50px;
+                display: flex;
+                flex-direction: column;
+                gap: 40px;
+            }
+
+            .header-bar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+
+            .back-button {
+                background-color: var(--primary-dark);
+                color: var(--white);
+                border: none;
+                padding: 10px 20px;
+                border-radius: 8px;
+                text-decoration: none;
+                transition: background-color 0.3s ease;
+            }
+
+            .back-button:hover {
+                background-color: #34495e;
+            }
+
+            .inquiry-section {
+                margin-bottom: 40px;
+            }
+
+            .inquiry-section h2 {
+                font-weight: 600;
+                margin-bottom: 20px;
+                border-left: 5px solid var(--accent-orange);
+                padding-left: 15px;
+            }
+
+            .inquiry-grid {
+                display: grid;
+                gap: 30px;
+            }
+
+            .inquiry-card {
+                background-color: var(--white);
+                border-radius: 12px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                padding: 25px;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+                border: 1px solid #e0e0e0;
+                position: relative;
+            }
+
+            .inquiry-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            }
+            
+            .inquiry-type {
+                font-weight: 600;
+                color: var(--accent-orange);
+                margin-bottom: 5px;
+            }
+            
+            .inquiry-card h3 {
+                font-size: 1.25rem;
+                margin-bottom: 10px;
+            }
+            
+            .inquiry-card p {
+                color: #666;
+                margin-bottom: 15px;
+                line-height: 1.6;
+            }
+
+ 
+
+            .respond-button {
+                background-color: var(--accent-orange);
+                color: var(--white);
+                border: none;
+                padding: 10px 20px;
+                border-radius: 8px;
+                text-decoration: none;
+                transition: background-color 0.3s ease;
+                cursor: pointer;
+            }
+
+            .respond-button:hover {
+                background-color: #e67e22;
+            }
+
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 1000;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgba(0,0,0,0.4);
+                padding-top: 60px;
+            }
+
+            .modal-content {
+                background-color: #fefefe;
+                margin: 5% auto;
+                padding: 30px;
+                border: 1px solid #888;
+                width: 80%;
+                max-width: 600px;
+                border-radius: 12px;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            }
+
+            .close-button {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+
+            .close-button:hover,
+            .close-button:focus {
+                color: #000;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+            .modal-content h2 {
+                margin-top: 0;
+                color: var(--primary-dark);
+            }
+
+            .modal-content textarea {
+                width: 100%;
+                padding: 10px;
+                font-size: 1rem;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                resize: vertical;
+                min-height: 150px;
+                margin-bottom: 15px;
+            }
+            
+            .modal-content .submit-button {
+                background-color: var(--accent-green);
+                color: var(--white);
+                border: none;
+                padding: 12px 25px;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+
+            .modal-content .submit-button:hover {
+                background-color: #27ae60;
+            }
+
+            
+            nav {
+                background-color: #000000;
+                width: 350px;
+                padding: 30px 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+                position: sticky;
+                top: 0;
+                left: 0;
+                height: 100vh;
+            }
+            .logo { margin-bottom: 20px; }
+            .logo img { width: 150px; }
+            .profile-status { display: flex; align-items: center; gap: 8px; font-size: 14px; margin-bottom: 20px; color: var(--white); }
+            .online-indicator { width: 10px; height: 10px; background-color: var(--online-status); border-radius: 50%; animation: pulse-online 1.5s infinite; }
+            @keyframes pulse-online { 0% { box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(52, 199, 89, 0); } 100% { box-shadow: 0 0 0 0 rgba(52, 199, 89, 0); } }
+            nav ul { list-style: none; padding: 0; width: 100%; margin: 0; }
+            nav ul li { position: relative; }
+            nav ul li a { display: block; padding: 20px 30px; color: var(--white); text-decoration: none; font-size: 16px; transition: background-color 0.3s ease, padding-left 0.3s ease; cursor: pointer; }
+            nav ul li a:hover { background-color: rgba(255, 255, 255, 0.1); padding-left: 40px; text-decoration: underline solid #f70404; text-decoration-thickness: 3px; }
+            .dropdown-content { display: none; position: absolute; top: 100%; left: 0; background-color: #000000; width: 100%; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); z-index: 100; border-radius: 0 0 8px 8px; }
+            .dropdown:hover .dropdown-content { display: block; }
+            .dropdown-content li a:hover { background-color: #1a1a1a; padding-left: 45px; }
+            @media (max-width: 992px) { .main-content { padding: 20px; } }
+
+            .orders-section {
+    background: var(--white);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.orders-section h2 {
+    margin-bottom: 20px;
+    border-left: 5px solid #f70404;
+    padding-left: 15px;
+    font-weight: 600;
+}
+
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+    background: var(--white);
+}
+
+.orders-table th, .orders-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.orders-table th {
+    background-color: var(--secondary-light);
+    font-weight: 600;
+    color: var(--primary-dark);
+}
+
+.orders-table tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+.status {
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: white;
+}
+
+.status.pending { background-color: #f39c12; }
+.status.completed { background-color: #2ecc71; }
+.status.cancelled { background-color: #e74c3c; }
+
+.cancel-btn, .view-btn {
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-right: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.cancel-btn {
+    background-color: #e74c3c;
+    color: #fff;
+}
+.cancel-btn:hover:enabled {
+    background-color: #c0392b;
+}
+.cancel-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.view-btn {
+    background-color: #000000;
+    color: #fff;
+}
+.view-btn:hover {
+    background-color: #000000;
+}
+.assign-btn {
+    background-color: #f70404; /* Purple */
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.assign-btn:hover {
+    background-color: #f70404;
+}
+
+
+        </style>
+
+        <nav>
+            <div class="logo">
+                <img src="../images/Group 17.png" alt="Shark Port City Logo">
+            </div>
+            <div class="profile-status">
+                <span class="online-indicator"></span>
+                Online
+            </div>
+            <ul>
+                <li><a href="home.php">Dashboard</a></li>
+                <li class="dropdown">
+                    <a href="#">User Management ▾</a>
+                    <ul class="dropdown-content">
+                        <li><a href="customer.html">Customer</a></li>
+                        <li><a href="partner.html">Delivery Partners</a></li>
+                        <li><a href="staff.html">Staff</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Content Management ▾</a>
+                    <ul class="dropdown-content">
+                        <li><a href="banners.html">Banners</a></li>
+                        <li><a href="photogallery.html">Photo Galleries</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Dish Management ▾</a>
+                    <ul class="dropdown-content">
+                        <li><a href="Menumanage.php">Menus</a></li>
+                        <li><a href="promotionmanagement.php">Promotions</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Order & Reservation Management▾</a>
+                    <ul class="dropdown-content">
+                        <li><a href="ordermanage.html">Orders</a></li>
+                        <li><a href="reservationmanage.html">Reservations</a></li>
+                    </ul>
+                </li>
+                <li><a href="inquiries.html">Inquiries</a></li>
+                 <li><a href="send-email.php">Notifications</a></li>
+                <li><a href="login.html">Log Out</a></li>
+            </ul>
+        </nav>
+
+        <div class="main-content">
+            <div class="header-bar">
+                <a href="home.php" class="back-button">Back to Dashboard</a>
+            </div>
+
+        <div class="orders-section">
+            <h2>All Orders</h2>
+            <div class="table-responsive">
+                <table class="orders-table" id="ordersTable">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Phone</th>
+                            <th>Items</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                            <th>Assign Delivery</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orders-table-body">
+                    <tr><td colspan="8">Loading orders...</td></tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+<div id="viewOrderModal" class="modal">
+  <div class="modal-content">
+    <span class="close-button">&times;</span>
+    <h2>Order Details</h2>
+    <div id="orderDetailsContent">
+      <!-- Order info will go here -->
+    </div>
+  </div>
+</div>
+<div class="modal" id="assignModal">
+    <div class="modal-content">
+        <h2>Assign Delivery Partner</h2>
+        <div class="form-group">
+            <label for="deliveryPartnerSelect">Choose Partner</label>
+            <select id="deliveryPartnerSelect" class="form-input"></select>
+        </div>
+        <button class="btn btn-success" id="assignConfirmBtn">Assign</button>
+        <button class="btn btn-outline" id="assignCancelBtn">Cancel</button>
+    </div>
+</div>
+
+
+<script>
+let selectedOrderId = null;
+
+function loadOrders() {
+    fetch("get_orders.php")
+        .then(res => res.text())
+        .then(html => {
+            document.getElementById("orders-table-body").innerHTML = html;
+
+            // Attach cancel button actions
+            document.querySelectorAll(".cancel-btn").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    updateOrder(btn.dataset.id, "cancel");
+                });
+            });
+
+            // Attach view button actions
+            const modal = document.getElementById("viewOrderModal");
+            const modalContent = document.getElementById("orderDetailsContent");
+            const closeBtn = modal.querySelector(".close-button");
+
+            document.querySelectorAll(".view-btn").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const row = btn.closest("tr");
+                    const cells = row.querySelectorAll("td");
+                    modalContent.innerHTML = `
+                        <p><strong>Order ID:</strong> ${cells[0].textContent}</p>
+                        <p><strong>Customer Name:</strong> ${cells[1].textContent}</p>
+                        <p><strong>Phone:</strong> ${cells[2].textContent}</p>
+                        <p><strong>Total:</strong> ${cells[4].textContent}</p>
+                        <p><strong>Status:</strong> ${cells[5].textContent}</p>
+                        <p><strong>Items:</strong> ${cells[3].textContent}</p>
+                    `;
+                    modal.style.display = "block";
+                });
+            });
+
+            closeBtn.onclick = () => modal.style.display = "none";
+            window.onclick = event => { if (event.target == modal) modal.style.display = "none"; };
+
+            // Attach assign button actions dynamically
+            document.querySelectorAll(".assign-btn").forEach(btn => {
+                btn.addEventListener("click", async () => {
+                    selectedOrderId = btn.dataset.id;
+                    const select = document.getElementById("deliveryPartnerSelect");
+                    select.innerHTML = '<option value="">Select Partner</option>';
+
+                    // Fetch active delivery partners
+                    const res = await fetch("get_delivery_partners.php");
+                    const partners = await res.json();
+                    partners.forEach(p => {
+                        const option = document.createElement("option");
+                        option.value = p.id;
+                        option.textContent = p.name;
+                        select.appendChild(option);
+                    });
+
+                    document.getElementById("assignModal").style.display = "block";
+                });
+            });
+        });
+}
+
+function updateOrder(orderId, action) {
+    fetch("update_orders.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orderId: orderId, action: action })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            alert("✅ " + data.message);
+            loadOrders(); // Refresh table
+        } else {
+            alert("❌ Error: " + data.error);
+        }
+    })
+    .catch(err => console.error(err));
+}
+
+// Cancel button
+document.getElementById('assignCancelBtn').addEventListener('click', () => {
+    document.getElementById('assignModal').style.display = 'none';
+});
+
+// Confirm assignment
+document.getElementById('assignConfirmBtn').addEventListener('click', async () => {
+    const partnerId = document.getElementById('deliveryPartnerSelect').value;
+    if (!partnerId) return alert('Please select a partner');
+
+    const res = await fetch('update_orders.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId: selectedOrderId, action: 'assign', deliveryPartnerId: partnerId })
+    });
+    const result = await res.json();
+    if (result.success) {
+        alert('Order assigned successfully');
+        document.getElementById('assignModal').style.display = 'none';
+        loadOrders(); // reload table only
+    } else {
+        alert(result.error);
+    }
+});
+
+// Load orders on page start
+loadOrders();
+
+// Optional auto-refresh
+setInterval(loadOrders, 10000);
+</script>
+
+</body>
+</html>

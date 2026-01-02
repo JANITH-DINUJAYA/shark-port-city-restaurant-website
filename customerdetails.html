@@ -1,0 +1,265 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Your Details | Shark Port City</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
+    <meta name="viewport" content="width=device-width, initial-scale=0.9">
+    <script src="https://kit.fontawesome.com/1165876da6.js" crossorigin="anonymous"></script>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <style>
+        *{
+            margin: 0;
+            font-family: 'poppins',sans-serif;
+        }
+        body{
+            background: rgb(255, 255, 255);
+            color: rgb(255, 255, 255);
+            margin: 0;
+            background-size: cover;
+            background-position: center;
+            width: 100%;
+            height: 130vh;
+        }
+        .details-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #f8f6f6;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .details-container h3 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        #customer-details-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .submit-details-btn {
+            padding: 15px;
+            background-color: rgb(123, 0, 0);
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-details-btn:hover {
+            background-color: rgb(92, 0, 0);
+        }
+        
+        #map-container {
+            height: 300px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            z-index: 1;
+        }
+
+        .leaflet-container img {
+            max-width: none !important;
+        }
+
+        /* New styles for the location display */
+        #selected-location-display {
+            padding: 10px;
+            background-color: #e9e9e9;
+            border-radius: 5px;
+            color: #333;
+            text-align: center;
+            font-size: 0.9em;
+        }
+   
+    </style>
+</head>
+<body>
+    <div class="header">
+    <img src="images/Group 17.png" class="logo">
+    <nav>
+        <ul>
+            <li><a href="index.php">Home</a></li>
+            <li class="dropdown">
+                <a href="#">The Menu ▾</a>
+                <ul class="dropdown-content">
+                     <li><a href="category.php?category=Appertizers">Appetizer</a></li>
+                    <li><a href="category.php?category=Soups">Soups & Salads</a></li>
+                    <li><a href="category.php?category=Rice%20%26%20Noodles">Rice & Salads</a></li>
+                    <li><a href="category.php?category=Seafood">Seafood Delight</a></li>
+                    <li><a href="category.php?category=Grilled_Specials">Meat Selection</a></li>
+                    <li><a href="category.php?category=Sizzlers">Sizzlers</a></li>
+                    <li><a href="category.php?category=Veggie Delight">Veggie Delights</a></li>
+                    <li><a href="category.php?category=Pizza%20%26%20Pasta">Pizza & Pasta</a></li>
+                    <li><a href="category.php?category=Snacks">Snacks</a></li>
+                    <li><a href="category.php?category=Desserts">Desserts</a></li>
+                    <li><a href="category.php?category=Beverages">Beverages</a></li>
+                    
+                     <li><a href="category.php?category=Chef_Specials">Chef's Special</a></li>
+                </ul>
+            </li>
+            <li><a href="location.html">Our Location</a></li>
+            <li><a href="reservation.html">Reservation</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            
+            <div class="ca">
+             <a href="cart.html"><i class="fa-solid fa-cart-shopping"></i>
+               </a>
+      <a href="setting.html"><i class="fa-solid fa-gear"></i></a></div>
+        </ul>
+        <a href="login.html" class="accounts-btn">Accounts</a>
+    </nav>
+</div>
+
+    <div class="details-container">
+        <h3>Enter Your Details</h3>
+        <form id="customer-details-form">
+            <div class="form-group">
+                <label for="customerName">Your Full Name</label>
+                <input type="text" id="customerName" name="customerName" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+             <div class="form-group">
+                <label for="phone">email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="map-container">Select Your Delivery Location</label>
+                <div id="map-container"></div>
+                <div id="selected-location-display">Drag the pin to select a location.</div>
+                <input type="hidden" id="delivery-lat" name="delivery-lat" required>
+                <input type="hidden" id="delivery-lon" name="delivery-lon" required>
+            </div>
+            <button type="submit" class="submit-details-btn">Confirm & Pay</button>
+        </form>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="contact">
+                <img src="images/Group 17.png" class="logo">
+                <h2>Shark Port City</h2>
+                <p>Email: Info@Greenlife.com</p>
+                <p>Phone: +077 344 05 04</p>
+                <p>Address: Beach Plaza, Port City, Colombo 01</p>
+                <p>© Shark Port city. All rights reserved</p>
+            </div>
+            <div class="footer-content">
+                <ul class="social-icons">
+                    <li><a href=""><i class="fab fa-facebook"></i></a></li>
+                    <li><a href=""><i class="fab fa-twitter"></i></a></li>
+                    <li><a href=""><i class="fab fa-instagram"></i></a></li>
+                    <li><a href=""><i class="fab fa-whatsapp"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('customer-details-form');
+            const deliveryLat = document.getElementById('delivery-lat');
+            const deliveryLon = document.getElementById('delivery-lon');
+            const locationDisplay = document.getElementById('selected-location-display');
+
+            const map = L.map('map-container').setView([6.9271, 79.8612], 13);
+
+            setTimeout(() => {
+                map.invalidateSize();
+            }, 100);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            const marker = L.marker([6.9271, 79.8612], { draggable: true }).addTo(map);
+
+            // Update the display and hidden inputs when the marker is moved
+            marker.on('dragend', function (e) {
+                const latlon = marker.getLatLng();
+                deliveryLat.value = latlon.lat.toFixed(6);
+                deliveryLon.value = latlon.lng.toFixed(6);
+                // NEW: Update the visible display with the coordinates
+                locationDisplay.textContent = `Selected Location: Lat ${latlon.lat.toFixed(6)}, Lon ${latlon.lng.toFixed(6)}`;
+            });
+
+           form.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    if (deliveryLat.value === '' || deliveryLon.value === '') {
+        alert("Please select your delivery location on the map.");
+        return;
+    }
+
+    const customerName = document.getElementById('customerName').value;
+    const phone = document.getElementById('phone').value;
+    const email = document.getElementById('email').value;
+    const deliveryAddress = {
+        lat: deliveryLat.value,
+        lon: deliveryLon.value
+    };
+
+    const customerDetails = {
+        name: customerName,
+        phone: phone,
+        email:email,
+        address: deliveryAddress
+    };
+
+    // Save the customer details to local storage
+    localStorage.setItem('customerDetails', JSON.stringify(customerDetails));
+
+    // Redirect to the new payment page
+    window.location.href = 'payments.html';
+});
+        });
+        function updateCartCount() {
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const count = cart.reduce((total, item) => total + item.quantity, 0);
+  const cartCountEl = document.getElementById('cart-count');
+  if (cartCountEl) {
+    cartCountEl.textContent = count;
+updateCartCount();
+  }
+} document.addEventListener('DOMContentLoaded', () => {
+    updateCartCount(); // <-- updates cart badge on page load
+}); 
+    </script>
+</body>
+</html>

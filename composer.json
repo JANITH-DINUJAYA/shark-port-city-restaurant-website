@@ -1,0 +1,8 @@
+{
+    "require": {
+        "kreait/firebase-php": "^6.9",
+        "google/cloud-firestore": "^1.54",
+        "phpmailer/phpmailer": "^6.11",
+        "sendgrid/sendgrid": "^8.1"
+    }
+}

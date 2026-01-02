@@ -1,0 +1,289 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Rate Your Order | Shark Port City</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
+    <meta name="viewport" content="width=device-width, initial-scale=0.9">
+    <script src="https://kit.fontawesome.com/1165876da6.js" crossorigin="anonymous"></script>
+    <style>
+         *{
+    margin: 0;
+	
+	font-family: 'poppins',sans-serif;
+	
+}
+body{
+	background: rgb(255, 255, 255);
+	color: rgb(255, 255, 255);
+	margin: 0;
+
+	background-size: cover;
+	background-position: center;
+	
+	width: 100%;
+    height: 130vh;
+}
+        .feedback-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #f8f6f6;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .feedback-container h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .feedback-container p {
+            color: #555;
+            margin-bottom: 30px;
+        }
+        .rating-section {
+            margin-bottom: 30px;
+        }
+        .rating-section h2 {
+            font-size: 1.5em;
+            color: rgb(123, 0, 0);
+            margin-bottom: 15px;
+        }
+        .stars {
+            font-size: 2.5em;
+            color: #ddd;
+            cursor: pointer;
+        }
+        h2{
+            color: rgb(123, 0, 0);
+        }
+        .stars .fa-star.active {
+            color: gold;
+        }
+        .feedback-form textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: vertical;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1em;
+        }
+        .feedbackform textarea {
+            width: 100%;
+            height: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: vertical;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1em;
+        }
+        .submit-btn {
+            width: 50%;
+            padding: 15px;
+            background-color: rgb(123, 0, 0);
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+        .submit-btn:hover {
+            background-color: rgb(92, 0, 0);
+        }
+
+    </style>
+    <!-- Firebase App (core) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<!-- Firebase Firestore -->
+<!-- Firebase Realtime Database -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+
+</head>
+<body>
+     <div class="header">
+    <img src="images/Group 17.png" class="logo">
+    <nav>
+        <ul>
+            <li><a href="index.php">Home</a></li>
+            <li class="dropdown">
+                <a href="#">The Menu ▾</a>
+                <ul class="dropdown-content">
+                  <li><a href="category.php?category=Appertizers">Appetizer</a></li>
+                    <li><a href="category.php?category=Soups">Soups & Salads</a></li>
+                    <li><a href="category.php?category=Rice%20%26%20Noodles">Rice & Salads</a></li>
+                    <li><a href="category.php?category=Seafood">Seafood Delight</a></li>
+                    <li><a href="category.php?category=Grilled_Specials">Meat Selection</a></li>
+                    <li><a href="category.php?category=Sizzlers">Sizzlers</a></li>
+                    <li><a href="category.php?category=Veggie Delight">Veggie Delights</a></li>
+                    <li><a href="category.php?category=Pizza%20%26%20Pasta">Pizza & Pasta</a></li>
+                    <li><a href="category.php?category=Snacks">Snacks</a></li>
+                    <li><a href="category.php?category=Desserts">Desserts</a></li>
+                    <li><a href="category.php?category=Beverages">Beverages</a></li>
+                    
+                     <li><a href="category.php?category=Chef_Specials">Chef's Special</a></li>
+                </ul>
+            </li>
+            <li><a href="location.html">Our Location</a></li>
+            <li><a href="reservation.html">Reservation</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            
+            <div class="ca">
+              <a href="cart.html"><i class="fa-solid fa-cart-shopping"></i>
+              </a>
+      <a href="setting.html"><i class="fa-solid fa-gear"></i></a></div>
+        </ul>
+        <a href="login.html" class="accounts-btn">Accounts</a>
+    </nav>
+</div>
+
+    <div class="feedback-container">
+        <h1>Rate Your Order</h1>
+        <p>Thank you for your business! Please take a moment to rate your experience.</p>
+        
+        <div class="rating-section">
+            <h2>Rate the Food</h2>
+            <div class="stars" id="food-stars">
+                <i class="far fa-star" data-rating="1"></i>
+                <i class="far fa-star" data-rating="2"></i>
+                <i class="far fa-star" data-rating="3"></i>
+                <i class="far fa-star" data-rating="4"></i>
+                <i class="far fa-star" data-rating="5"></i>
+            </div>
+        </div>
+
+        <div class="rating-section">
+            <h2>Rate the Delivery Rider</h2>
+            <div class="stars" id="rider-stars">
+                <i class="far fa-star" data-rating="1"></i>
+                <i class="far fa-star" data-rating="2"></i>
+                <i class="far fa-star" data-rating="3"></i>
+                <i class="far fa-star" data-rating="4"></i>
+                <i class="far fa-star" data-rating="5"></i>
+            </div>
+        </div>
+         <div class="feedbackform">
+            <h2>Email</h2>
+            <textarea placeholder="your email"></textarea>
+        </div>
+        <div class="feedback-form">
+            <h2>Leave a Comment</h2>
+            <textarea placeholder="Tell us what you think..."></textarea>
+        </div>
+        
+        <button class="submit-btn">Submit Feedback</button>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="contact">
+                <img src="images/Group 17.png" class="logo">
+                <h2>Shark Port City</h2>
+                <p>Email: Info@Greenlife.com</p>
+                <p>Phone: +077 344 05 04</p>
+                <p>Address: Beach Plaza, Port City, Colombo 01</p>
+                <p>© Shark Port city. All rights reserved</p>
+            </div>
+            <div class="footer-content">
+                <ul class="social-icons">
+                    <li><a href=""><i class="fab fa-facebook"></i></a></li>
+                    <li><a href=""><i class="fab fa-twitter"></i></a></li>
+                    <li><a href=""><i class="fab fa-instagram"></i></a></li>
+                    <li><a href=""><i class="fab fa-whatsapp"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCKjyIBmC3WqSvtB7ynYE4YEM-ryz-PtEg",
+    authDomain: "shark-port-city.firebaseapp.com",
+    projectId: "shark-port-city",
+    storageBucket: "shark-port-city.appspot.com",  
+    messagingSenderId: "469906666653",
+    appId: "1:469906666653:web:94e866e387252ed21ed074",
+    measurementId: "G-BM1EP1M2CY",
+    databaseURL: "https://shark-port-city-default-rtdb.asia-southeast1.firebasedatabase.app/"  // ✅ add this
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const foodStars = document.getElementById('food-stars');
+    const riderStars = document.getElementById('rider-stars');
+    const submitBtn = document.querySelector('.submit-btn');
+    const commentBox = document.querySelector('.feedback-form textarea');
+     const comntBox = document.querySelector('.feedbackform textarea');
+    let foodRating = 0;
+    let riderRating = 0;
+
+    const handleStarRating = (starContainer, setRating) => {
+      starContainer.addEventListener('click', (e) => {
+        const clickedStar = e.target.closest('i');
+        if (!clickedStar) return;
+        const rating = parseInt(clickedStar.dataset.rating);
+        setRating(rating);
+        const stars = starContainer.querySelectorAll('i');
+        stars.forEach((star, index) => {
+          star.classList.toggle('active', index < rating);
+          star.classList.toggle('fas', index < rating);
+          star.classList.toggle('far', index >= rating);
+        });
+      });
+    };
+
+    handleStarRating(foodStars, (rating) => foodRating = rating);
+    handleStarRating(riderStars, (rating) => riderRating = rating);
+
+    submitBtn.addEventListener('click', async () => {
+      const comment = commentBox.value.trim();
+      const email = comntBox.value.trim();
+
+      if (foodRating === 0 || riderRating === 0) {
+        alert("Please rate both food and rider before submitting.");
+        return;
+      }
+
+      try {
+        await db.ref("feedbacks").push({
+          foodRating: foodRating,
+          riderRating: riderRating,
+          comment: comment,
+          email:email,
+          createdAt: new Date().toISOString()
+        });
+
+        alert('Thank you for your feedback!');
+        window.location.href = 'index.php';
+      } catch (error) {
+        console.error("Error saving feedback: ", error);
+        alert("Failed to submit feedback. Please try again.");
+      }
+    });
+  });
+  function updateCartCount() {
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const count = cart.reduce((total, item) => total + item.quantity, 0);
+  const cartCountEl = document.getElementById('cart-count');
+  if (cartCountEl) {
+    cartCountEl.textContent = count;
+updateCartCount();
+  }
+} document.addEventListener('DOMContentLoaded', () => {
+    updateCartCount(); // <-- updates cart badge on page load
+}); 
+</script>
+
+</body>
+</html>

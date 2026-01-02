@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.9">
+    <title>Shark Port City </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.20.1/mapbox-gl.css' rel='stylesheet' />
+</head>
+<style>
+   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+:root {
+  --primary-lime: #a4e637;
+  --dark-red: #7b0000;
+  --pure-black: #000000;
+  --dark-bg: #0a0a0a;
+  --card-bg: rgba(15, 15, 15, 0.9);
+  --glass-border: rgba(164, 230, 55, 0.15);
+  --text-primary: #ffffff;
+  --text-secondary: #cccccc;
+  --text-muted: #999999;
+}
+
+body {
+  
+   background-color: #fff;
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Dynamic background with floating particles */
+body::before {
+background: none;
+}
+
+@keyframes fd-backgroundShift {
+  0%, 100% { transform: translateX(0) translateY(0) scale(1); }
+  33% { transform: translateX(-10px) translateY(-20px) scale(1.02); }
+  66% { transform: translateX(10px) translateY(20px) scale(0.98); }
+}
+
+/* Floating particles animation */
+.fd-particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.fd-particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background:#f70404;
+  border-radius: 50%;
+  opacity: 0.3;
+  animation: fd-float 15s infinite linear;
+}
+
+.fd-particle:nth-child(odd) {
+  background: var(--dark-red);
+  animation-duration: 20s;
+}
+
+@keyframes fd-float {
+  0% {
+    transform: translateY(100vh) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% { opacity: 0.3; }
+  90% { opacity: 0.3; }
+  100% {
+    transform: translateY(-100px) translateX(100px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 40px;
+    background-color: #000000; 
+    border-radius: 50px;
+    margin: 10px 20px; /* Adds space around the header */
+   
+}
+
+.logo {
+    width: 80px; /* Adjust size to fit your logo */
+    height: auto;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 40px; /* Space between the menu links and the Accounts button */
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 25px; /* Space between navigation links */
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 400;
+    transition: color 0.3s;
+}
+
+nav ul li a:hover {
+    color: #f70404; /* Lighter green on hover for a subtle effect */
+}
+
+/* This is the new button for "Accounts" */
+.accounts-btn {
+    background-color: #f70404; /* Green button color */
+    color: #1a362a; /* Dark text color for contrast */
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 20px; /* Rounded button corners */
+    font-weight: 600;
+    transition: background-color 0.3s;
+    white-space: nowrap; /* Prevents text from wrapping on smaller screens */
+}
+
+.accounts-btn:hover {
+    background-color: #f70404; /* Slightly darker green on hover */
+}
+
+/* Navigation Header */
+
+
+/* Delivery Card */
+.fd-delivery-card { background: linear-gradient(135deg,var(--card-bg), rgba(20,20,20,0.9)); border:1px solid rgba(123,0,0,0.3); border-radius:28px; padding:40px; margin-bottom:40px; }
+.fd-delivery-header { display:flex; align-items:center; gap:15px; margin-bottom:30px; }
+.fd-delivery-icon { font-size:32px; animation: fd-bounce 2s ease-in-out infinite; }
+@keyframes fd-bounce {0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+.fd-delivery-title { font-size:24px;font-weight:700;color:white;}
+.fd-delivery-grid { 
+  display: grid; 
+  grid-template-columns: repeat(3, 1fr); 
+  background-color: #000000;
+  padding: 20px;
+  gap: 20px;
+}
+
+.fd-delivery-info-item { background:rgba(41, 40, 40, 0.716); border:1px solid var(--glass-border); border-radius:16px; padding:24px; backdrop-filter:blur(10px); transition:all 0.3s ease;}
+.fd-delivery-info-item:hover { border-color:var(--dark-red); transform:translateY(-3px); box-shadow:0 10px 30px rgba(0,0,0,0.6);}
+.fd-info-label { color:white; font-weight:800; font-size:18px; text-transform:uppercase; margin-bottom:8px; display:block;}
+.fd-info-value { color:var(--text-primary); font-weight:600; font-size:15px; margin-bottom: 8px; }
+
+/* Map Section */
+
+.fd-map-header { text-align:center; margin-bottom:30px; }
+.fd-map-title { font-size:28px; font-weight:700; color:black; display:flex; justify-content:center; gap:12px; margin-bottom:8px; }
+.fd-map-subtitle { color:var(--text-secondary); font-size:16px; }
+.fd-map-container { border-radius:24px; overflow:hidden; border:2px solid var(--glass-border); }
+.fd-map-frame { width:100%; height:450px; border:none; }
+
+/* Footer Section */
+.fd-footer-section { background:linear-gradient(135deg, rgb(123, 0, 0), #1c1c1c), rgba(10,10,10,0.9); border:1px solid var(--glass-border); border-radius:24px; padding:50px 40px; text-align:center; margin-bottom: 10px; }
+.fd-footer-emoji { font-size:48px; display:block; margin-bottom:20px; }
+.fd-footer-message { font-size:18px; color:white; margin-bottom:15px; line-height:1.6; }
+.fd-footer-highlight { font-size:22px; font-weight:700; color:var(--primary-lime); display:block; margin-top:10px; }
+
+
+/* Responsive */
+@media(max-width:768px){
+.fd-main-container{padding:0 15px;}
+.fd-hero-section{padding:40px 25px;border-radius:24px;}
+.fd-hero-title{font-size:36px;}
+.fd-progress-timeline{grid-template-columns:1fr;}
+@media(max-width:768px){
+  .fd-delivery-grid {
+    grid-template-columns: 1fr; /* stack vertically on tablets/phones */
+  }
+}
+
+.fd-map-frame{height:350px;}
+.fd-nav-content{flex-direction:column; gap:20px;}
+.fd-nav-links{gap:20px;}
+}
+@media(max-width:480px){
+.fd-hero-title{font-size:28px;}
+.fd-section-title{font-size:24px;}
+.fd-progress-item,.fd-delivery-card,.fd-footer-section{padding:25px 20px;}
+
+}
+footer{
+  margin-top: 1px;
+  width: 100%;
+  background-color: black;
+}
+.container {
+  display: flex;
+  flex-direction: column; 
+  justify-content: center;
+  align-items: center; 
+  padding-bottom: 10px;
+  
+  color: #fff;
+  gap: 30px; 
+}
+
+
+.contact {
+  text-align: center;
+}
+
+
+.contact h2 {
+  font-size: 28px;
+  margin-bottom: 15px;
+  color: white;
+}
+
+
+.footer-content {
+  text-align: center;
+}
+
+
+.social-icons {
+  list-style: none; 
+  
+  display: flex;
+  justify-content: center; 
+  gap: 20px; 
+}
+
+.social-icons a {
+  color: white;
+  font-size: 25px;
+  text-decoration: none;
+}
+
+.social-icons a:hover {
+  color: #ccc; /
+}
+.ca {
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.ca a {
+    color: #fff;
+    font-size: 22px;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.ca a:hover {
+    color: #f70404;
+    transform: scale(1.1);
+}
+
+
+</style>
+</head>
+<body>
+  <!-- Floating particles -->
+
+
+    <div class="header">
+        <img src="../images/Group 17.png" class="logo" alt="Shark Port">
+        <nav>
+            <ul>
+                <li><a href="delivery-history.php">Home</a></li>
+                <li><a href="ourlocation.html">Our Location</a></li>
+                <li><a href="map.html">Order Map</a></li>
+                <li><a href="contac.html">Contact</a></li>
+                
+                <li><a href="chatbot.html">Support Center</a></li>
+                           <div class="ca">
+      <a href="setting.php"><i class="fa-solid fa-gear"></i></a></div>
+            </ul>
+            <a href="login.html" class="accounts-btn">Accounts</a>
+        </nav>
+    </div>
+  
+      <div class="fd-particles">
+    <div class="fd-particle" style="left:10%; animation-delay:0s;"></div>
+    <div class="fd-particle" style="left:20%; animation-delay:2s;"></div>
+    <div class="fd-particle" style="left:30%; animation-delay:4s;"></div>
+    <div class="fd-particle" style="left:40%; animation-delay:6s;"></div>
+    <div class="fd-particle" style="left:50%; animation-delay:8s;"></div>
+  </div>
+<section class="fd-delivery-grid" id="deliveryCard" style="display:none;">
+  <!-- Customer Card -->
+  <div class="fd-delivery-info-item">
+    <span class="fd-info-label">Customer</span>
+    <span class="fd-info-value" id="customerName"></span><br>
+    <span class="fd-info-label">Phone</span>
+    <span class="fd-info-value" id="customerPhone"></span>
+  </div>
+
+  <!-- Items Card -->
+  <div class="fd-delivery-info-item">
+    <span class="fd-info-label">Items</span>
+    <div id="assignedOrders"></div>
+  </div>
+
+  <!-- Total Card -->
+  <div class="fd-delivery-info-item">
+    <span class="fd-info-label">Total</span>
+    <span class="fd-info-value" id="orderTotal"></span>
+  </div>
+</section>
+
+<div class="fd-delivery-info-item" style="display:flex; justify-content:center; align-items:center;">
+    <button id="completeOrderBtn" class="btn btn-success">Mark as Completed</button>
+</div>
+
+
+    <!-- Map Section -->
+    <section class="fd-map-section">
+      <div class="fd-map-header">
+        <h2 class="fd-map-title">📍 Live Delivery Tracking</h2>
+      </div>
+      <div class="fd-map-container">
+  <div id="map" style="width: 100%; height: 450px; border-radius:24px;"></div>
+</div>
+
+    </section>
+
+    <!-- Footer -->
+    <section class="fd-footer-section">
+      <span class="fd-footer-emoji">🍽️</span>
+      <p class="fd-footer-message">
+        Thank you for choosing Shark Port City!<br>
+       
+      </p>
+      <span class="fd-footer-highlight">Estimated Delivery: Loading</span>
+    </section>
+    
+  </div>
+  <footer>
+        <div class="container">
+            <div class="contact">
+                <img src="../images/Group 17.png" class="logo">
+                <h2>Shark Port City</h2>
+                <p>Email: Info@Greenlife.com</p>
+                <p>Phone: +077 344 05 04</p>
+                <p>Address: Beach Plaza, Port City, Colombo 01</p>
+                <p>© Shark Port city. All rights reserved</p>
+            </div>
+            <div class="footer-content">
+                <ul class="social-icons">
+                    <li><a href=""><i class="fab fa-facebook"></i></a></li>
+                    <li><a href=""><i class="fab fa-twitter"></i></a></li>
+                    <li><a href=""><i class="fab fa-instagram"></i></a></li>
+                    <li><a href=""><i class="fab fa-whatsapp"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.min.js"></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.20.1/mapbox-gl.js'></script>
+</body>
+<script>
+let currentPartnerId = null;
+let routeLine = null;
+let routeControl = null;
+// Default Leaflet marker icon
+const DefaultIcon = L.icon({
+    iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+});
+// Motorbike icon
+const MotorbikeIcon = L.icon({
+    iconUrl: '../images/motorbike.png', // Path to your motorbike image
+    iconSize: [40, 40], // size of the icon
+    iconAnchor: [20, 20], // point of the icon which will correspond to marker's location
+    popupAnchor: [0, -20] // point from which the popup should open relative to the iconAnchor
+});
+
+L.Marker.prototype.options.icon = DefaultIcon;
+
+let map;
+let customerMarker;
+let partnerMarker;
+
+// Initialize the map
+function initMap() {
+    const initialPos = [6.9274, 79.8426]; // Default to Colombo
+    map = L.map('map').setView(initialPos, 14);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Load orders initially
+    loadAssignedOrders();
+
+    // Refresh orders every 10 seconds
+    setInterval(loadAssignedOrders, 10000);
+
+    // Refresh partner location every 5 seconds
+    setInterval(() => {
+        if (currentPartnerId) loadPartnerLocation(currentPartnerId);
+    }, 5000);
+}
+
+// Load assigned orders and place customer marker once
+async function loadAssignedOrders() {
+    try {
+        const res = await fetch("get_partner_orders.php");
+        const orders = await res.json();
+
+        const deliveryCard = document.getElementById("deliveryCard");
+
+        if (!orders || orders.length === 0) {
+            deliveryCard.style.display = "none";
+            console.warn("No assigned orders found");
+            return;
+        }
+
+        const order = orders[0];
+        currentPartnerId = order.partnerId;
+
+        // Fill delivery card
+        document.getElementById("customerName").textContent = order.customer.name || "Unknown";
+        document.getElementById("customerPhone").textContent = order.customer.phone || "";
+
+        let itemsHtml = "<ul>";
+        if (Array.isArray(order.items)) {
+            order.items.forEach(item => {
+                itemsHtml += `<li>${item.name} (x${item.quantity}) - Rs.${item.price}</li>`;
+            });
+        }
+        itemsHtml += "</ul>";
+        document.getElementById("assignedOrders").innerHTML = itemsHtml;
+        document.getElementById("orderTotal").textContent = `Rs.${order.total || 0}`;
+        deliveryCard.style.display = "grid";
+
+        // Place customer marker only once
+        if (!customerMarker) {
+            const lat = parseFloat(order.customer.lat);
+            const lon = parseFloat(order.customer.lon);
+
+            if (!isNaN(lat) && !isNaN(lon)) {
+                const pos = [lat, lon];
+                customerMarker = L.marker(pos).addTo(map)
+                    .bindPopup(`Delivery Location: ${order.customer.name}`)
+                    .openPopup();
+
+                map.setView(pos, 16);
+            }
+        }
+
+    } catch (err) {
+        console.error("Error loading orders:", err);
+    }
+}
+function getDistanceInKm(lat1, lon1, lat2, lon2) {
+    const R = 6371; // Earth radius in km
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = 
+        Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.cos(lat1 * Math.PI/180) * Math.cos(lat2 * Math.PI/180) *
+        Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c;
+}
+function estimateDeliveryTime(lat1, lon1, lat2, lon2, speedKmh = 25) {
+    const distance = getDistanceInKm(lat1, lon1, lat2, lon2);
+    const timeMinutes = Math.ceil((distance / speedKmh) * 60);
+    return timeMinutes;
+}
+
+// Complete order button
+document.getElementById("completeOrderBtn").addEventListener("click", async () => {
+    if (!currentPartnerId) {
+        alert("No partner assigned to this order!");
+        return;
+    }
+
+    try {
+        const res = await fetch("complete_order.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ partnerId: currentPartnerId })
+        });
+
+        const result = await res.json();
+        if (result.success) {
+            alert("Order marked as completed!");
+            document.getElementById("deliveryCard").style.display = "none";
+            loadAssignedOrders();
+        } else {
+            alert("Failed to update order: " + result.message);
+        }
+    } catch (err) {
+        console.error(err);
+        alert("Error completing order.");
+    }
+});
+function updatePartnerLocation() {
+    if (!navigator.geolocation) return;
+
+    navigator.geolocation.getCurrentPosition(async (pos) => {
+        const lat = pos.coords.latitude;
+        const lon = pos.coords.longitude;
+
+        try {
+            await fetch('update_partner_location.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ lat, lon })
+            });
+            console.log('Partner location updated:', lat, lon);
+        } catch (err) {
+            console.error('Failed to update location:', err);
+        }
+    });
+}
+
+// Call every 5 seconds
+setInterval(updatePartnerLocation, 5000);
+
+// Optionally call immediately
+updatePartnerLocation();
+// Load and update partner marker dynamically
+const MAPBOX_TOKEN = 'pk.eyJ1IjoiamFuaXRoMjIiLCJhIjoiY21nZGxmMGd0MDYzbzJqcHA2Ynkyd3QyaiJ9.6YngQVpKugnj0ypoDhSO8g';
+
+async function loadPartnerLocation(partnerId) {
+    try {
+        const res = await fetch(`get_partner_location.php?partnerId=${partnerId}`);
+        const data = await res.json();
+
+        if (!data || !data.lat || !data.lon) return;
+
+        const lat = parseFloat(data.lat);
+        const lon = parseFloat(data.lon);
+
+        if (isNaN(lat) || isNaN(lon)) return;
+
+        const pos = [lat, lon];
+
+        // Update partner marker
+        if (!partnerMarker) {
+            partnerMarker = L.marker(pos, { icon: MotorbikeIcon })
+                .addTo(map)
+                .bindPopup("Delivery Partner")
+                .openPopup();
+        } else {
+            partnerMarker.setLatLng(pos).bindPopup("Delivery Partner");
+        }
+
+        // Remove previous route if exists
+        if (routeControl) {
+            map.removeControl(routeControl);
+        }
+
+        if (customerMarker) {
+            const partnerPos = partnerMarker.getLatLng();
+            const customerPos = customerMarker.getLatLng();
+
+            routeControl = L.Routing.control({
+                waypoints: [
+                    L.latLng(partnerPos.lat, partnerPos.lng),
+                    L.latLng(customerPos.lat, customerPos.lng)
+                ],
+                router: L.Routing.mapbox(MAPBOX_TOKEN, { profile: 'mapbox/driving' }),
+                routeWhileDragging: false,
+                draggableWaypoints: false,
+                addWaypoints: false,
+                lineOptions: { styles: [{ color: 'cyan', weight: 4 }] },
+                createMarker: () => null,
+                show: false
+            }).addTo(map);
+        }
+
+        // Update estimated delivery
+        if (customerMarker) {
+            const customerPos = customerMarker.getLatLng();
+            const estimatedMinutes = estimateDeliveryTime(
+                lat, lon,
+                customerPos.lat, customerPos.lng
+            );
+
+            document.querySelector('.fd-footer-highlight').textContent =
+                `Estimated Delivery: ${estimatedMinutes} minutes`;
+        }
+
+    } catch (err) {
+        console.error("Error fetching partner location:", err);
+    }
+}
+
+
+// Initialize map
+initMap();
+</script>
+
+
+</html>

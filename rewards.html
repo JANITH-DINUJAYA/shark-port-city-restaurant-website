@@ -1,0 +1,361 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Shark Port City Colombo - My Rewards</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=0.9">
+    <script src="https://kit.fontawesome.com/1165876da6.js" crossorigin="anonymous"></script>
+ <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+        /* Reusing global styles from your existing site */
+        * {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #fff;
+            color: #333;
+            margin: 0;
+            width: 100%;
+        }
+
+        .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 40px;
+    background-color: #000000; 
+    border-radius: 50px;
+    margin: 10px 20px; /* Adds space around the header */
+   
+}
+
+.logo {
+    width: 80px; /* Adjust size to fit your logo */
+    height: auto;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 40px; /* Space between the menu links and the Accounts button */
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 25px; /* Space between navigation links */
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 400;
+    transition: color 0.3s;
+}
+
+nav ul li a:hover {
+    color: #f70404; /* Lighter green on hover for a subtle effect */
+}
+
+/* This is the new button for "Accounts" */
+.accounts-btn {
+    background-color: #f70404; /* Green button color */
+    color: #1a362a; /* Dark text color for contrast */
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 20px; /* Rounded button corners */
+    font-weight: 600;
+    transition: background-color 0.3s;
+    white-space: nowrap; /* Prevents text from wrapping on smaller screens */
+}
+
+.accounts-btn:hover {
+    background-color: #f70404; /* Slightly darker green on hover */
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: black;
+  padding: 10px 0;
+  min-width: 200px;
+  z-index: 1000;
+}
+
+.dropdown-content li {
+  list-style: none;
+  margin: 0;
+
+}
+
+.dropdown-content li a {
+  display: block;
+  padding: 8px 15px;
+  color: white;
+  text-decoration: none;
+}
+.ca {
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.ca a {
+    color: #fff; /* Icons color changed to white */
+    font-size: 22px;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.ca a:hover {
+    color: #f70404; /* Accent color on hover */
+    transform: scale(1.1); /* Subtle hover animation */
+}
+
+.dropdown-content li a:hover {
+  background: #222;
+  text-decoration: underline;
+  text-decoration-color: #f70404;
+  text-decoration-thickness: 3px;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+        footer {
+            width: 100%;
+            background-color: black;
+            margin-top: 50px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding-bottom: 10px;
+            color: #fff;
+            gap: 30px;
+        }
+
+        .contact {
+            text-align: center;
+        }
+
+        .contact h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .footer-content {
+            text-align: center;
+        }
+
+        .social-icons {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .social-icons a {
+            color: white;
+            font-size: 25px;
+            text-decoration: none;
+        }
+
+        .social-icons a:hover {
+            color: #ccc;
+        }
+        .page-title{
+            text-align: center;
+        }
+        .ca a {
+  position: relative; /* make this parent relative */
+  color: #fff; 
+  font-size: 22px;
+  transition: color 0.3s ease;
+}
+
+.cart-count {
+  position: absolute;
+  top: -8px;   /* adjust these values to fit */
+  right: -8px;  /* adjust these values to fit */
+  background: #dc0f0f;
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 3px 7px;
+  border-radius: 50%;
+  min-width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 2px rgba(0,0,0,0.3);
+  z-index: 10;
+  font-family: 'Poppins', sans-serif;
+  animation: none; /* remove animation */
+}
+</style>
+</head>
+<body>
+   <div class="header">
+    <img src="images/Group 17.png" class="logo">
+    <nav>
+        <ul>
+            <li><a href="index.php">Home</a></li>
+            <li class="dropdown">
+                <a href="#">The Menu ▾</a>
+                <ul class="dropdown-content">
+                    <li><a href="category.php?category=Appertizers">Appetizer</a></li>
+                    <li><a href="category.php?category=Soups">Soups & Salads</a></li>
+                    <li><a href="category.php?category=Rice%20%26%20Noodles">Rice & Salads</a></li>
+                    <li><a href="category.php?category=Seafood">Seafood Delight</a></li>
+                    <li><a href="category.php?category=Grilled_Specials">Meat Selection</a></li>
+                    <li><a href="category.php?category=Sizzlers">Sizzlers</a></li>
+                    <li><a href="category.php?category=Veggie Delight">Veggie Delights</a></li>
+                    <li><a href="category.php?category=Pizza%20%26%20Pasta">Pizza & Pasta</a></li>
+                    <li><a href="category.php?category=Snacks">Snacks</a></li>
+                    <li><a href="category.php?category=Desserts">Desserts</a></li>
+                    <li><a href="category.php?category=Beverages">Beverages</a></li>
+                     <li><a href="category.php?category=Beverages">Beverages</a></li>
+                     <li><a href="category.php?category=Chef_Specials">Chef's Special</a></li>
+                </ul>
+            </li>
+            <li><a href="location.html">Our Location</a></li>
+            <li><a href="reservation.html">Reservation</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            
+            <div class="ca">
+              <a href="cart.html"><i class="fa-solid fa-cart-shopping"></i>
+               <span id="cart-count" class="cart-count">0</span></a>
+      <a href="setting.html"><i class="fa-solid fa-gear"></i></a></div>
+        </ul>
+        <a href="login.html" class="accounts-btn">Accounts</a>
+    </nav>
+</div>
+
+   <main class="main-content">
+    <div class="page-title">
+        <h1>Promo Codes</h1>
+        <p>Use these codes to get special discounts and offers!</p>
+    </div>
+
+    <div class="promo-container" style="max-width:600px; margin:auto; padding:40px; background:#fff; border-radius:15px; box-shadow:0 8px 25px rgba(0,0,0,0.1); text-align:center; margin-bottom:40px;">
+        
+        
+
+        <div class="promo-code" style="margin-bottom:20px; padding:15px; border:1px dashed #36ae54; border-radius:10px;">
+            <h3 style="color:#36ae54;">HAPPYDAY</h3>
+            <p>Get 15% off on orders this weekend!</p>
+            <button onclick="copyPromoCode('HAPPYDAY')" style="padding:10px 20px; background:#f70404; border:none; border-radius:5px; color:#ffffff; font-weight:600; cursor:pointer;">Copy Code</button>
+        </div>
+    </div>
+</main>
+
+    <!-- Footer -->
+    <footer style="margin-top:auto; width:100%; background:#0d0d0d; color:#fff; padding:40px 20px; text-align:center;">
+        <img src="images/Group 17.png" style="width:60px; margin-bottom:10px;">
+        <h2>Shark Port City</h2>
+        <p>Email: Info@Greenlife.com</p>
+        <p>Phone: +077 344 05 04</p>
+        <p>Address: Beach Plaza, Port City, Colombo 01</p>
+        <p>© Shark Port city. All rights reserved</p>
+    </footer>
+
+   <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+
+// ✅ Firebase config
+const firebaseConfig = {
+    apiKey: "AIzaSyCKjyIBmC3WqSvtB7ynYE4YEM-ryz-PtEg",
+    authDomain: "shark-port-city.firebaseapp.com",
+    databaseURL: "https://shark-port-city-default-rtdb.asia-southeast1.firebasedatabase.app/",
+    projectId: "shark-port-city",
+    storageBucket: "shark-port-city.appspot.com",
+    messagingSenderId: "469906666653",
+    appId: "1:469906666653:web:94e866e387252ed21ed074",
+    measurementId: "G-BM1EP1M2CY"
+};
+
+// ✅ Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+
+// 🟢 Reference to the promo codes
+const promoRef = ref(database, "promocodes");
+const promoContainer = document.querySelector(".promo-container");
+
+// 🟡 Load promo codes dynamically
+onValue(promoRef, (snapshot) => {
+    promoContainer.innerHTML = ""; // clear old content
+    if (snapshot.exists()) {
+       snapshot.forEach((child) => {
+    const promo = child.val();
+    if (promo.status !== "Active") return; // skip inactive promos
+
+            const promoBox = document.createElement("div");
+            promoBox.classList.add("promo-code");
+            promoBox.style.cssText = `
+                margin-bottom:20px; 
+                padding:15px; 
+                border:1px dashed #36ae54; 
+                border-radius:10px;
+            `;
+
+            promoBox.innerHTML = `
+                <h3 style="color:#36ae54;">${promo.code}</h3>
+                <p>${promo.discount}% OFF - Status: 
+                    <strong style="color:${promo.status === "Active" ? "#36ae54" : "#f70404"};">
+                        ${promo.status}
+                    </strong>
+                </p>
+                <button onclick="copyPromoCode('${promo.code}')" 
+                    style="padding:10px 20px; background:#f70404; border:none; border-radius:5px; color:#ffffff; font-weight:600; cursor:pointer;">
+                    Copy Code
+                </button>
+            `;
+            promoContainer.appendChild(promoBox);
+        });
+    } else {
+        promoContainer.innerHTML = "<p>No promo codes available right now.</p>";
+    }
+});
+
+// 🛒 Cart counter
+function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const count = cart.reduce((total, item) => total + item.quantity, 0);
+    const cartCountEl = document.getElementById("cart-count");
+    if (cartCountEl) cartCountEl.textContent = count;
+}
+document.addEventListener("DOMContentLoaded", updateCartCount);
+
+// 📋 Copy function
+window.copyPromoCode = function (code) {
+    navigator.clipboard.writeText(code)
+        .then(() => alert(`Promo code "${code}" copied to clipboard!`))
+        .catch(() => alert("Failed to copy the promo code."));
+};
+</script>
+
+</body>
+</html>

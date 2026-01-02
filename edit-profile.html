@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Shark Port City Colombo - Edit Profile</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
+    <meta name="viewport" content="width=device-width, initial-scale=0.9">
+    <script src="https://kit.fontawesome.com/1165876da6.js" crossorigin="anonymous"></script>
+
+    <style>
+        /* Your existing CSS styles go here */
+        * { margin: 0; font-family: 'Poppins', sans-serif; }
+        body { background: #fff; color: #333; width: 100%; }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 40px;
+            background-color: #000000; 
+            border-radius: 50px;
+            margin: 10px 20px;
+        }
+
+        .logo {
+            width: 80px;
+            height: auto;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 25px;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 400;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #f70404;
+        }
+
+        .accounts-btn {
+            background-color: #f70404;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            white-space: nowrap;
+        }
+
+        .accounts-btn:hover {
+            background-color: #f70404;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: black;
+            padding: 10px 0;
+            min-width: 200px;
+            z-index: 1000;
+        }
+
+        .dropdown-content li {
+            list-style: none;
+            margin: 0;
+        }
+
+        .dropdown-content li a {
+            display: block;
+            padding: 8px 15px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .ca {
+            margin-left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .ca a {
+            color: #fff;
+            font-size: 22px;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .ca a:hover {
+            color: #f70404;
+            transform: scale(1.1);
+        }
+
+        .dropdown-content li a:hover {
+            background: #222;
+            text-decoration: underline;
+            text-decoration-color: #f70404;
+            text-decoration-thickness: 3px;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        footer { width: 100%; background-color: black; margin-top: 50px; }
+        .container { display: flex; flex-direction: column; justify-content: center; align-items: center; padding-bottom: 10px; color: #fff; gap: 30px; }
+        .contact { text-align: center; }
+        .contact h2 { font-size: 28px; margin-bottom: 15px; color: white; }
+        .footer-content { text-align: center; }
+        .social-icons { list-style: none; display: flex; justify-content: center; gap: 20px; }
+        .social-icons a { color: white; font-size: 25px; text-decoration: none; }
+        .social-icons a:hover { color: #ccc; }
+
+        .edit-profile-container { max-width: 600px; margin: 50px auto; padding: 30px; background-color: #f8f8f8; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .edit-profile-container h1 { text-align: center; margin-bottom: 30px; font-size: 2.5rem; font-weight: 700; }
+        .profile-section { background-color: #fff; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .profile-section h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: 15px; color: rgb(123,0,0); border-bottom: 2px solid #ddd; padding-bottom: 10px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 500; color: #555; }
+        .form-group input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; }
+        .btn-update { padding: 10px 25px; font-weight: bold; color: white; background-color: rgb(123,0,0); border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease; }
+        .btn-update:hover { background-color: #8B0000; }
+        .btn-delete { background-color: #dc3545; margin-top: 20px; }
+        .btn-delete:hover { background-color: #c82333; }
+        
+        /* New style for the reauth modal */
+        #reauth-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+            display: none; /* Initially hidden */
+        }
+        #reauth-modal-content {
+            background:#fff;
+            padding:25px;
+            border-radius:10px;
+            text-align:center;
+        }
+        .ca a {
+  position: relative; /* make this parent relative */
+  color: #fff; 
+  font-size: 22px;
+  transition: color 0.3s ease;
+}
+
+.cart-count {
+  position: absolute;
+  top: -8px;   /* adjust these values to fit */
+  right: -8px;  /* adjust these values to fit */
+  background: #dc0f0f;
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 3px 7px;
+  border-radius: 50%;
+  min-width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 2px rgba(0,0,0,0.3);
+  z-index: 10;
+  font-family: 'Poppins', sans-serif;
+  animation: none; /* remove animation */
+}
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <img src="images/Group 17.png" class="logo">
+        <nav>
+            <ul>
+                <li><a href="index.php">Home</a></li>
+                <li class="dropdown">
+                    <a href="#">The Menu ▾</a>
+                    <ul class="dropdown-content">
+                        <li><a href="category.php?category=Appertizers">Appetizer</a></li>
+                    <li><a href="category.php?category=Soups">Soups & Salads</a></li>
+                    <li><a href="category.php?category=Rice%20%26%20Noodles">Rice & Salads</a></li>
+                    <li><a href="category.php?category=Seafood">Seafood Delight</a></li>
+                    <li><a href="category.php?category=Grilled_Specials">Meat Selection</a></li>
+                    <li><a href="category.php?category=Sizzlers">Sizzlers</a></li>
+                    <li><a href="category.php?category=Veggie Delight">Veggie Delights</a></li>
+                    <li><a href="category.php?category=Pizza%20%26%20Pasta">Pizza & Pasta</a></li>
+                    <li><a href="category.php?category=Snacks">Snacks</a></li>
+                    <li><a href="category.php?category=Desserts">Desserts</a></li>
+                    <li><a href="category.php?category=Beverages">Beverages</a></li>
+                     <li><a href="category.php?category=Beverages">Beverages</a></li>
+                     <li><a href="category.php?category=Chef_Specials">Chef's Special</a></li>
+                    </ul>
+                </li>
+                <li><a href="location.html">Our Location</a></li>
+                <li><a href="reservation.html">Reservation</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                
+                <div class="ca">
+                  <a href="cart.html"><i class="fa-solid fa-cart-shopping"></i>
+               <span id="cart-count" class="cart-count">0</span></a>
+                    <a href="setting.html"><i class="fa-solid fa-gear"></i></a>
+                </div>
+            </ul>
+            <a href="login.html" class="accounts-btn" id="authLink">Accounts</a>
+        </nav>
+    </div>
+
+    <main class="edit-profile-container" id="profile-container">
+        <h1>Edit Profile</h1>
+
+        <div class="profile-section">
+            <h2>Change Name</h2>
+            <form id="updateNameForm">
+                <div class="form-group">
+                    <label for="full-name">New Full Name</label>
+                    <input type="text" id="full-name" required>
+                </div>
+                <button type="submit" class="btn-update">Save Changes</button>
+            </form>
+        </div>
+
+        <div class="profile-section">
+            <h2>Change Password</h2>
+            <form id="updatePasswordForm">
+                <div class="form-group">
+                    <label for="new-password">New Password</label>
+                    <input type="password" id="new-password" required>
+                </div>
+                <button type="submit" class="btn-update">Change Password</button>
+            </form>
+        </div>
+
+        <div class="profile-section">
+            <h2>Change Email</h2>
+            <form id="updateEmailForm">
+                <div class="form-group">
+                    <label for="new-email">New Email Address</label>
+                    <input type="email" id="new-email" required>
+                </div>
+                <button type="submit" class="btn-update">Update Email</button>
+            </form>
+        </div>
+        
+        <div class="profile-section">
+            <h2>Account Deletion</h2>
+            <p style="color: #777; font-size: 0.9rem;">This action cannot be undone. All your data and reservations will be permanently removed.</p>
+            <button type="button" class="btn-update btn-delete" id="deleteAccountBtn">Delete Account</button>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="contact">
+                <img src="images/Group 17.png" class="logo" alt="Shark Port City Logo">
+                <h2>Shark Port City</h2>
+                <p>Email: Info@Greenlife.com</p>
+                <p>Phone: +077 344 05 04</p>
+                <p>Address: Beach Plaza, Port City, Colombo 01</p>
+                <p>© Shark Port city. All rights reserved</p>
+            </div>
+            <div class="footer-content">
+                <ul class="social-icons">
+                    <li><a href=""><i class="fab fa-facebook"></i></a></li>
+                    <li><a href=""><i class="fab fa-twitter"></i></a></li>
+                    <li><a href=""><i class="fab fa-instagram"></i></a></li>
+                    <li><a href=""><i class="fab fa-whatsapp"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <div id="reauth-modal">
+        <div id="reauth-modal-content">
+            <p>For security, please re-enter your password.</p>
+            <input type="password" id="reauth-password" placeholder="Password">
+            <button id="reauth-submit" class="btn-update">Confirm</button>
+            <button id="reauth-cancel" class="btn-update" style="background:#6c757d;">Cancel</button>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+        import { 
+            getAuth, 
+            onAuthStateChanged, 
+            signOut, 
+            updateProfile, 
+            updatePassword, 
+            updateEmail, 
+            EmailAuthProvider, 
+            reauthenticateWithCredential,
+            deleteUser
+        } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCKjyIBmC3WqSvtB7ynYE4YEM-ryz-PtEg",
+            authDomain: "shark-port-city.firebaseapp.com",
+            projectId: "shark-port-city",
+            storageBucket: "shark-port-city.appspot.com",
+            messagingSenderId: "469906666653",
+            appId: "1:469906666653:web:94e866e387252ed21ed074",
+            measurementId: "G-BM1EP1M2CY"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // DOM Elements
+        const authLink = document.getElementById("authLink");
+        const fullNameInput = document.getElementById("full-name");
+        const updateNameForm = document.getElementById("updateNameForm");
+        const updatePasswordForm = document.getElementById("updatePasswordForm");
+        const updateEmailForm = document.getElementById("updateEmailForm");
+        const deleteAccountBtn = document.getElementById("deleteAccountBtn");
+        const reauthModal = document.getElementById("reauth-modal");
+        const reauthPasswordInput = document.getElementById('reauth-password');
+        const reauthSubmitBtn = document.getElementById('reauth-submit');
+        const reauthCancelBtn = document.getElementById('reauth-cancel');
+
+        // Helper function for reauthentication
+        const handleReauth = (user, password) => {
+            const credential = EmailAuthProvider.credential(user.email, password);
+            return reauthenticateWithCredential(user, credential);
+        };
+
+        // Event Listeners
+        authLink.addEventListener("click", (e) => {
+            e.preventDefault();
+            signOut(auth).then(() => {
+                window.location.href = "login.html";
+            }).catch(error => {
+                console.error("Sign Out Error:", error);
+            });
+        });
+
+        updateNameForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const user = auth.currentUser;
+            const newName = fullNameInput.value.trim();
+            if (!user || !newName) return;
+            
+            try {
+                await updateProfile(user, { displayName: newName });
+                await setDoc(doc(db, "users", user.uid), { fullName: newName }, { merge: true });
+                alert("Name updated successfully!");
+            } catch(error) {
+                alert("Error updating name: " + error.message);
+            }
+        });
+
+        updatePasswordForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const newPassword = document.getElementById("new-password").value.trim();
+            const user = auth.currentUser;
+            if (!user || !newPassword) return;
+
+            try {
+                await updatePassword(user, newPassword);
+                alert("Password updated successfully!");
+            } catch (error) {
+                if (error.code === "auth/requires-recent-login") {
+                    reauthModal.style.display = "flex";
+                    reauthSubmitBtn.onclick = async () => {
+                        try {
+                            await handleReauth(user, reauthPasswordInput.value);
+                            reauthModal.style.display = "none";
+                            await updatePassword(user, newPassword);
+                            alert("Password updated successfully!");
+                        } catch (reauthError) {
+                            alert("Reauthentication failed: " + reauthError.message);
+                        }
+                    };
+                    reauthCancelBtn.onclick = () => { reauthModal.style.display = "none"; };
+                } else {
+                    alert("Error updating password: " + error.message);
+                }
+            }
+        });
+
+        updateEmailForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const newEmail = document.getElementById("new-email").value.trim();
+            const user = auth.currentUser;
+            if (!user || !newEmail) return;
+
+            try {
+                await updateEmail(user, newEmail);
+                await setDoc(doc(db, "users", user.uid), { email: newEmail }, { merge: true });
+                alert("Email updated successfully! Please log in again with your new email.");
+                await signOut(auth);
+                window.location.href = "login.html";
+            } catch (error) {
+                if (error.code === "auth/requires-recent-login") {
+                    reauthModal.style.display = "flex";
+                    reauthSubmitBtn.onclick = async () => {
+                        try {
+                            await handleReauth(user, reauthPasswordInput.value);
+                            reauthModal.style.display = "none";
+                            await updateEmail(user, newEmail);
+                            await setDoc(doc(db, "users", user.uid), { email: newEmail }, { merge: true });
+                            alert("Email updated successfully! Please log in again with your new email.");
+                            await signOut(auth);
+                            window.location.href = "login.html";
+                        } catch (reauthError) {
+                            alert("Reauthentication failed: " + reauthError.message);
+                        }
+                    };
+                    reauthCancelBtn.onclick = () => { reauthModal.style.display = "none"; };
+                } else {
+                    alert("Error updating email: " + error.message);
+                }
+            }
+        });
+        
+        deleteAccountBtn.addEventListener("click", async () => {
+            if (!confirm("Are you sure you want to delete your account? This is permanent.")) return;
+            const user = auth.currentUser;
+            if (!user) return;
+
+            try {
+                await deleteUser(user);
+                // The Firestore document should be deleted by a server-side function
+                // or via security rules, not directly from the client.
+                alert("Account and associated data deleted successfully.");
+                window.location.href = "index.html";
+            } catch (error) {
+                if (error.code === "auth/requires-recent-login") {
+                    reauthModal.style.display = "flex";
+                    reauthSubmitBtn.onclick = async () => {
+                        try {
+                            await handleReauth(user, reauthPasswordInput.value);
+                            reauthModal.style.display = "none";
+                            await deleteUser(user);
+                            alert("Account and associated data deleted successfully.");
+                            window.location.href = "index.html";
+                        } catch (reauthError) {
+                            alert("Reauthentication failed: " + reauthError.message);
+                        }
+                    };
+                    reauthCancelBtn.onclick = () => { reauthModal.style.display = "none"; };
+                } else {
+                    alert("Error deleting account: " + error.message);
+                }
+            }
+        });
+
+        // Initial check for authentication state
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                authLink.textContent = "Sign Out";
+                authLink.href = "#";
+
+                const userRef = doc(db, "users", user.uid);
+                const docSnap = await getDoc(userRef);
+
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    fullNameInput.value = data.fullName || user.displayName || '';
+                } else {
+                    fullNameInput.value = user.displayName || '';
+                    await setDoc(userRef, {
+                        fullName: user.displayName || '',
+                        email: user.email,
+                        createdAt: serverTimestamp()
+                    });
+                }
+            } else {
+                alert("You must log in first.");
+                window.location.href = "login.html";
+            }
+        });
+        function updateCartCount() {
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const count = cart.reduce((total, item) => total + item.quantity, 0);
+  const cartCountEl = document.getElementById('cart-count');
+  if (cartCountEl) {
+    cartCountEl.textContent = count;
+updateCartCount();
+  }
+} document.addEventListener('DOMContentLoaded', () => {
+    updateCartCount(); // <-- updates cart badge on page load
+}); 
+    </script>
+</body>
+</html>

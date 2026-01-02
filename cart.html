@@ -1,0 +1,520 @@
+<!doctype html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Shark Port City Colombo</title>
+    <link rel="stylesheet" href="style.css"> <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
+    <meta name="viewport" content="width=device-width, initial-scale=0.9">
+    <script src="https://kit.fontawesome.com/1165876da6.js" crossorigin="anonymous"></script>
+</head>
+<body>
+     <div class="header">
+    <img src="images/Group 17.png" class="logo">
+    <nav>
+        <ul>
+            <li><a href="index.php">Home</a></li>
+            <li class="dropdown">
+                <a href="#">The Menu ▾</a>
+                <ul class="dropdown-content">
+                     <li><a href="category.php?category=Appertizers">Appetizer</a></li>
+                    <li><a href="category.php?category=Soups">Soups & Salads</a></li>
+                    <li><a href="category.php?category=Rice%20%26%20Noodles">Rice & Salads</a></li>
+                    <li><a href="category.php?category=Seafood">Seafood Delight</a></li>
+                    <li><a href="category.php?category=Grilled_Specials">Meat Selection</a></li>
+                    <li><a href="category.php?category=Sizzlers">Sizzlers</a></li>
+                    <li><a href="category.php?category=Veggie Delight">Veggie Delights</a></li>
+                    <li><a href="category.php?category=Pizza%20%26%20Pasta">Pizza & Pasta</a></li>
+                    <li><a href="category.php?category=Snacks">Snacks</a></li>
+                    <li><a href="category.php?category=Desserts">Desserts</a></li>
+                    <li><a href="category.php?category=Beverages">Beverages</a></li>
+                     <li><a href="category.php?category=Beverages">Beverages</a></li>
+                     <li><a href="category.php?category=Chef_Specials">Chef's Special</a></li>
+                </ul>
+            </li>
+            <li><a href="location.html">Our Location</a></li>
+            <li><a href="reservation.html">Reservation</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            
+            <div class="ca">
+             <a href="cart.html"><i class="fa-solid fa-cart-shopping"></i>
+              </a>
+      <a href="setting.html"><i class="fa-solid fa-gear"></i></a></div>
+        </ul>
+        <a href="login.html" class="accounts-btn">Accounts</a>
+    </nav>
+</div>
+
+    <div class="cart-container">
+        <div class="cart-items">
+            <div class="cart-tab-header">
+                <a href="#cart" class="cart-header-link active" id="cart-tab">YOUR CART</a>
+            <a href="#history" class="cart-header-link" id="history-tab">ORDER HISTORY</a>
+            </div>
+            <div class="cart-content-section active-content" id="cart-content">
+  </div>
+            </div>
+            <div class="cart-content-section" id="history-content">
+                <p class="empty-order-message">You have no past orders.</p>
+            </div>
+        
+
+        <div class="cart-summary">
+            <h3>YOUR CART</h3>
+            <div class="cart-info">
+                <div class="info-row">
+                    <p>Delivery Charge</p>
+                    <p>Rs0.00</p>
+                </div>
+                <div class="info-row">
+                    <p>Packing Charge</p>
+                    <p>Rs0.00</p>
+                </div>
+            </div>
+            <div class="checkout-section">
+                <a class="checkout-btn">
+                    Checkout 0.00
+                </a>
+            </div>
+        </div>
+    </div>
+    </div>
+<footer>
+        <div class="container">
+            <div class="contact">
+                <img src="images/Group 17.png" class="logo">
+                <h2>Shark Port City</h2>
+                <p>Email: Info@Greenlife.com</p>
+                <p>Phone: +077 344 05 04</p>
+                <p>Address: Beach Plaza, Port City, Colombo 01</p>
+                <p>© Shark Port city. All rights reserved</p>
+            </div>
+            <div class="footer-content">
+                <ul class="social-icons">
+                    <li><a href=""><i class="fab fa-facebook"></i></a></li>
+                    <li><a href=""><i class="fab fa-twitter"></i></a></li>
+                    <li><a href=""><i class="fab fa-instagram"></i></a></li>
+                    <li><a href=""><i class="fab fa-whatsapp"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f6f6;
+    color: #333; 
+    
+}
+
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 40px;
+    background-color: #000000; 
+    border-radius: 50px;
+    margin: 10px 20px; /* Adds space around the header */
+   
+}
+
+.logo {
+    width: 80px; /* Adjust size to fit your logo */
+    height: auto;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 40px; /* Space between the menu links and the Accounts button */
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 25px; /* Space between navigation links */
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 400;
+    transition: color 0.3s;
+}
+
+nav ul li a:hover {
+    color: #f70404; /* Lighter green on hover for a subtle effect */
+}
+
+/* This is the new button for "Accounts" */
+.accounts-btn {
+    background-color: #f70404; /* Green button color */
+    color: #ffffff; /* Dark text color for contrast */
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 20px; /* Rounded button corners */
+    font-weight: 600;
+    transition: background-color 0.3s;
+    white-space: nowrap; /* Prevents text from wrapping on smaller screens */
+}
+
+.accounts-btn:hover {
+    background-color: #f70404; /* Slightly darker green on hover */
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: black;
+  padding: 10px 0;
+  min-width: 200px;
+  z-index: 1000;
+}
+
+.dropdown-content li {
+  list-style: none;
+  margin: 0;
+
+}
+
+.dropdown-content li a {
+  display: block;
+  padding: 8px 15px;
+  color: white;
+  text-decoration: none;
+}
+.ca {
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.ca a {
+    color: #fff; /* Icons color changed to white */
+    font-size: 22px;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.ca a:hover {
+    color: #f70404; /* Accent color on hover */
+    transform: scale(1.1); /* Subtle hover animation */
+}
+
+.dropdown-content li a:hover {
+  background: #222;
+  text-decoration: underline;
+  text-decoration-color: #f70404;
+  text-decoration-thickness: 3px;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.cart-container {
+    display: flex;
+    gap: 30px;
+    max-width: 1200px;
+    width: 100%;
+    margin: 30px auto; 
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    min-height: 80vh; 
+    transition: all 0.3s ease; 
+}
+
+
+.cart-items {
+    flex: 2; 
+    background-color: #fff; 
+}
+
+.cart-tab-header {
+    display: flex;
+    justify-content: flex-start;
+    gap: 30px;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #ddd;
+}
+
+.cart-header-link {
+    position: relative;
+    text-transform: uppercase;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #666;
+    text-decoration: none;
+    padding-bottom: 10px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.cart-header-link.active {
+    color: #333;
+}
+
+.cart-header-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: #333;
+    transition: all 0.3s ease;
+}
+
+.cart-content-section {
+    display: none;
+    padding-top: 20px; 
+}
+
+.cart-content-section.active-content {
+    display: block;
+}
+
+.empty-order-message, .empty-cart-message {
+    text-align: center;
+    color: #666;
+    padding: 50px 0;
+  
+}
+
+.cart-summary {
+    flex: 1; 
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+.cart-container.history-active {
+    padding: 0; 
+    background-color: #fff; 
+    
+}
+
+.cart-container.history-active .cart-summary {
+    display: none; 
+}
+
+.cart-container.history-active .cart-items {
+    flex: 1; 
+    width: 100%; 
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cart-container.history-active .cart-tab-header {
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+.cart-container.history-active .cart-content-section.active-content {
+  
+    width: 100%;
+    text-align: center;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    color: #333;
+    font-size: 1rem;
+}
+
+.checkout-section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.checkout-btn {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    text-align: center;
+    background-color: #333;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.checkout-btn:hover {
+    background-color: #000;
+}
+footer{
+  width: 100%;
+  background-color: black;
+}
+.container {
+  display: flex;
+  flex-direction: column; 
+  justify-content: center;
+  align-items: center; 
+  padding-bottom: 10px;
+  
+  color: #fff;
+  gap: 30px; 
+}
+
+
+.contact {
+  text-align: center;
+}
+
+
+.contact h2 {
+  font-size: 28px;
+  margin-bottom: 15px;
+  color: white;
+}
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 15px;
+}
+
+.cart-item-img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.cart-item-details {
+  flex: 1;
+}
+
+.cart-item-name {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.cart-item-price {
+  color: #555;
+  margin: 5px 0;
+}
+
+
+.footer-content {
+  text-align: center;
+}
+
+
+.social-icons {
+  list-style: none; 
+  
+  display: flex;
+  justify-content: center; 
+  gap: 20px; 
+}
+
+.social-icons a {
+  color: white;
+  font-size: 25px;
+  text-decoration: none;
+}
+
+.social-icons a:hover {
+  color: #ccc; /
+}
+.order-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: left;
+  }
+
+  .order-card h4 {
+    margin-bottom: 10px;
+    color: #333;
+  }
+
+  .order-items {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+  }
+
+  .order-items li {
+    padding: 5px 0;
+    border-bottom: 1px dashed #ccc;
+  }
+
+  .order-summary p {
+    margin: 5px 0;
+    font-weight: 500;
+  }
+.ca a {
+  position: relative; /* make this parent relative */
+  color: #fff; 
+  font-size: 22px;
+  transition: color 0.3s ease;
+}
+
+  .empty-order-message {
+    text-align: center;
+    color: #555;
+    margin-top: 20px;
+  }
+</style>
+<!-- Load Firebase first -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+<!-- Initialize Firebase AFTER scripts -->
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCKjyIBmC3WqSvtB7ynYE4YEM-ryz-PtEg",
+    authDomain: "shark-port-city.firebaseapp.com",
+    databaseURL: "https://shark-port-city-default-rtdb.asia-southeast1.firebasedatabase.app/",
+    projectId: "shark-port-city",
+    storageBucket: "shark-port-city.appspot.com",
+    messagingSenderId: "469906666653",
+    appId: "1:469906666653:web:94e866e387252ed21ed074",
+    measurementId: "G-BM1EP1M2CY"
+  };
+
+  const app = firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.database();
+</script>
+
+<!-- Then load your cart.js -->
+<script src="cart.js"></script>
+<script src="history.js"></script>
+
+</body>
+</html>
