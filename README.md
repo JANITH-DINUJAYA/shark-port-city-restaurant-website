@@ -15,6 +15,7 @@ A full-featured restaurant website and mobile-integrated system using Firebase, 
 - Delivery Rider Status Update
 - Separate Delivery Website
 - Cart Function
+- Send Emails
   
 🛠️ Technologies & Tools
 
@@ -26,6 +27,7 @@ A full-featured restaurant website and mobile-integrated system using Firebase, 
 - *Maps & Tracking:* Mapbox
 - *Mobile Tunneling:* ngrok
 - *Version Control:* Git & GitHub
+- *Send Emails:*Php Mailer
 
 📦 Setup Instructions
 
